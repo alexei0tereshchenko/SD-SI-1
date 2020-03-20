@@ -22,5 +22,5 @@ public class ObjectType {
             inverseJoinColumns = @JoinColumn(name = "attr_id"))
     private List<Attribute> attributes;
 
-
+    private String name;
 }

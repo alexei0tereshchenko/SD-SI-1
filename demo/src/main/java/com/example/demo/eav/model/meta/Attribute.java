@@ -13,5 +13,5 @@ public class Attribute {
 
     private AttrType attrType;
 
-
+    private String name;
 }

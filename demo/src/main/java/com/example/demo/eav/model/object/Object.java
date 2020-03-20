@@ -19,4 +19,6 @@ public class Object {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "object_type_id")
     private ObjectType objectType;
+
+    private String name;
 }
