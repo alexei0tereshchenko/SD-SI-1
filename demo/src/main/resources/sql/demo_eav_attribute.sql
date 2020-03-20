@@ -1,0 +1,13 @@
+INSERT INTO demo_eav.attribute (attribute_id, attr_type, name) VALUES (1, 0, 'First Name');
+INSERT INTO demo_eav.attribute (attribute_id, attr_type, name) VALUES (2, 0, 'Second Name');
+INSERT INTO demo_eav.attribute (attribute_id, attr_type, name) VALUES (3, 0, 'Amount');
+INSERT INTO demo_eav.attribute (attribute_id, attr_type, name) VALUES (4, 1, 'Customer Reference');
+INSERT INTO demo_eav.attribute (attribute_id, attr_type, name) VALUES (5, 0, 'Address');
+INSERT INTO demo_eav.attribute (attribute_id, attr_type, name) VALUES (6, 0, 'Status');
+INSERT INTO demo_eav.attribute (attribute_id, attr_type, name) VALUES (7, 0, 'Mobile Phone');
+INSERT INTO demo_eav.attribute (attribute_id, attr_type, name) VALUES (8, 0, 'Balance');
+INSERT INTO demo_eav.attribute (attribute_id, attr_type, name) VALUES (9, 0, 'E-mail');
+INSERT INTO demo_eav.attribute (attribute_id, attr_type, name) VALUES (10, 0, 'Birthday');
+INSERT INTO demo_eav.attribute (attribute_id, attr_type, name) VALUES (11, 0, 'Date');
+INSERT INTO demo_eav.attribute (attribute_id, attr_type, name) VALUES (12, 0, 'Gender');
+INSERT INTO demo_eav.attribute (attribute_id, attr_type, name) VALUES (13, 1, 'Contact');
