@@ -4,6 +4,7 @@ import com.example.demo.eav.model.meta.ObjectType;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @Entity
@@ -21,4 +22,10 @@ public class Object {
     private ObjectType objectType;
 
     private String name;
+
+    @OneToMany(mappedBy = "object")
+    private List<Param> params;
+
+    @OneToMany(mappedBy = "object")
+    private List<Reference> references;
 }
