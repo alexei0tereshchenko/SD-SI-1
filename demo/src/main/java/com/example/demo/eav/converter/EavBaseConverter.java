@@ -6,6 +6,7 @@ import com.example.demo.eav.model.object.Object;
 import com.example.demo.eav.model.object.Param;
 import com.example.demo.eav.model.object.Reference;
 import com.example.demo.model.Base;
+import com.example.demo.repository.ObjectRepository;
 import com.example.demo.repository.ObjectTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -20,6 +21,9 @@ public class EavBaseConverter {
     @Autowired
     private ObjectTypeRepository objectTypeRepository;
 
+    @Autowired
+    private ObjectRepository objectRepository;
+
     public Object convertToEav(Base source) {
         Object target = new Object();
 
@@ -30,7 +34,7 @@ public class EavBaseConverter {
         ).orElse(null));
 
         target.setObjectId(source.getObjectId());
-
+        target.setParentObject(objectRepository.findById(source.getParentId()).orElse(null));
         List<Param> params = new ArrayList<>();
 
         List<Reference> references = new ArrayList<>();

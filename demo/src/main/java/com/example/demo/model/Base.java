@@ -6,5 +6,6 @@ import lombok.Data;
 public abstract class Base {
     private Long objectId;
     private Long objectTypeId;
+    private Long parentId;
     private String name;
 }
