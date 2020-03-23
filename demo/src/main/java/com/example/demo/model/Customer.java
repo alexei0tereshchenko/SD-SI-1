@@ -10,11 +10,11 @@ import lombok.EqualsAndHashCode;
 @ObjectType(objectTypeId = "2")
 public class Customer extends Base {
     @Attribute(attrId = "1")
-    public String firstName;
+    private String firstName;
 
     @Attribute(attrId = "2")
-    public String lastName;
+    private String lastName;
 
     @Attribute(attrId = "6")
-    public Status status;
+    private Status status;
 }

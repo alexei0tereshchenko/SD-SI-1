@@ -34,12 +34,14 @@ public class EavBaseConverter {
         ).orElse(null));
 
         target.setObjectId(source.getObjectId());
-        target.setParentObject(objectRepository.findById(source.getParentId()).orElse(null));
+        if (source.getParentId() != null)
+            target.setParentObject(objectRepository.findById(source.getParentId()).orElse(null));
         List<Param> params = new ArrayList<>();
 
         List<Reference> references = new ArrayList<>();
         for (Field declaredField : source.getClass().getDeclaredFields()) {
             if (declaredField.getDeclaredAnnotation(Attribute.class) != null) {
+                declaredField.setAccessible(true);
                 com.example.demo.eav.model.meta.Attribute attribute = new com.example.demo.eav.model.meta.Attribute();
                 attribute.setAttributeId(Long.valueOf(declaredField.getDeclaredAnnotation(Attribute.class).attrId()));
                 Param param = new Param();
@@ -54,6 +56,7 @@ public class EavBaseConverter {
             }
 
             if (declaredField.getDeclaredAnnotation(com.example.demo.annotations.Reference.class) != null) {
+                declaredField.setAccessible(true);
                 com.example.demo.eav.model.meta.Attribute attribute = new com.example.demo.eav.model.meta.Attribute();
                 attribute.setAttributeId(Long.valueOf(declaredField.getDeclaredAnnotation(com.example.demo.annotations.Reference.class).attrId()));
                 Reference reference = new Reference();
