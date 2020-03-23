@@ -23,6 +23,8 @@ public class EavBaseConverter {
     public Object convertToEav(Base source) {
         Object target = new Object();
 
+        target.setName(source.getName());
+
         target.setObjectType(objectTypeRepository.findById(
                 Long.valueOf(source.getClass().getDeclaredAnnotation(ObjectType.class).objectTypeId())
         ).orElse(null));
@@ -40,7 +42,7 @@ public class EavBaseConverter {
                 param.setAttribute(attribute);
                 param.setObject(target);
                 try {
-                    param.setValue((String) declaredField.get(source));
+                    param.setValue(declaredField.get(source).toString());
                 } catch (IllegalAccessException e) {
                     throw new RuntimeException(e);
                 }

@@ -13,11 +13,12 @@ public class CustomerService {
     @Autowired
     CustomerIntegrationService customerIntegrationServiceInt;
 
-    public Customer createCustomer (CreateCustomerDto source) {
+    public Customer createCustomer(CreateCustomerDto source) {
         Customer customer = new Customer();
         customer.setFirstName(source.getFirstName());
         customer.setLastName(source.getLastName());
         customer.setStatus(Status.ACTIVE);
+        customer.setName(customer.getFirstName() + " " + customer.getLastName());
         customerIntegrationServiceInt.createCustomer(customer);
         return customer;
     }

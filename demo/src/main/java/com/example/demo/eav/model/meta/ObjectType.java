@@ -23,4 +23,8 @@ public class ObjectType {
     private List<Attribute> attributes;
 
     private String name;
+
+    public int hashCode(){
+        return objectTypeId.intValue();
+    }
 }

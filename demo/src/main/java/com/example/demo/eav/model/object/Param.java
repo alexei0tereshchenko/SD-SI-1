@@ -8,14 +8,15 @@ import java.io.Serializable;
 
 @Data
 @Entity
+@IdClass(ParamId.class)
 public class Param implements Serializable {
     @Id
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "attr_id")
     private Attribute attribute;
 
     @Id
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "object_id")
     private Object object;
 
