@@ -11,3 +11,8 @@ INSERT INTO demo_eav.attribute (attribute_id, attr_type, name) VALUES (10, 0, 'B
 INSERT INTO demo_eav.attribute (attribute_id, attr_type, name) VALUES (11, 0, 'Date');
 INSERT INTO demo_eav.attribute (attribute_id, attr_type, name) VALUES (12, 0, 'Gender');
 INSERT INTO demo_eav.attribute (attribute_id, attr_type, name) VALUES (13, 1, 'Contact');
+INSERT INTO demo_eav.attribute (attribute_id, attr_type, name) VALUES (14, 0, 'Description');
+INSERT INTO demo_eav.attribute (attribute_id, attr_type, name) VALUES (15, 0, 'Created When');
+INSERT INTO demo_eav.attribute (attribute_id, attr_type, name) VALUES (16, 0, 'Payment Method');
+INSERT INTO demo_eav.attribute (attribute_id, attr_type, name) VALUES (17, 0, 'Created By');
+INSERT INTO demo_eav.attribute (attribute_id, attr_type, name) VALUES (18, 0, 'Cancellation Date');
