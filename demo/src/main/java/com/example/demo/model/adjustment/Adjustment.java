@@ -1,4 +1,4 @@
-package com.example.demo.adjustment;
+package com.example.demo.model.adjustment;
 import com.example.demo.annotations.Attribute;
 import com.example.demo.annotations.ObjectType;
 import lombok.Data;

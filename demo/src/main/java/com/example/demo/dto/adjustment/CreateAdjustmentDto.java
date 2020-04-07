@@ -1,6 +1,6 @@
-package com.example.demo.adjustment_dto;
+package com.example.demo.dto.adjustment;
 
-import com.example.demo.adjustment.AdjustmentStatus;
+import com.example.demo.model.adjustment.AdjustmentStatus;
 
 import java.util.Calendar;
 
