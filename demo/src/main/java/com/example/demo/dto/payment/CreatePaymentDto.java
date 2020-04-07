@@ -1,6 +1,6 @@
-package com.example.demo.dto;
+package com.example.demo.dto.payment;
 
-import com.example.demo.model.Payment.PaymentMethod;
+import com.example.demo.model.payment.PaymentMethod;
 import lombok.Data;
 
 import java.math.BigDecimal;
