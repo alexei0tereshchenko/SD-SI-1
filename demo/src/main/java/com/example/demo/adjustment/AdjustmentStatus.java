@@ -1,4 +1,4 @@
-package com.example.demo.model;
+package com.example.demo.adjustment;
 
 public enum AdjustmentStatus {
     PENDING, APPROVED, CANCELED, REJECTED

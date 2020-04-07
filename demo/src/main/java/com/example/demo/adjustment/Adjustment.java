@@ -1,15 +1,11 @@
-package com.example.demo.model;
-
+package com.example.demo.adjustment;
 import com.example.demo.annotations.Attribute;
 import com.example.demo.annotations.ObjectType;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-
 import java.util.Calendar;
 
-@Getter
-@Setter
+@Data
 @EqualsAndHashCode()
 @ObjectType(objectTypeId = "4")
 public class Adjustment {
