@@ -1,10 +1,9 @@
 package com.example.demo.dto;
 
-import com.example.demo.model.PaymentMethod;
+import com.example.demo.model.Payment.PaymentMethod;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 @Data
 public class CreatePaymentDto {
