@@ -1,10 +1,8 @@
 package com.example.demo.integration;
 
 import com.example.demo.eav.converter.EavBaseConverter;
-import com.example.demo.eav.model.meta.Attribute;
 import com.example.demo.eav.model.object.Object;
-import com.example.demo.eav.model.object.Param;
-import com.example.demo.model.Customer;
+import com.example.demo.model.customer.Customer;
 import com.example.demo.repository.AttributeRepository;
 import com.example.demo.repository.ObjectRepository;
 import com.example.demo.repository.ParamRepository;

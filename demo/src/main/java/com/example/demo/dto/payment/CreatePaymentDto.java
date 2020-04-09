@@ -1,4 +1,4 @@
-package com.example.demo.dto;
+package com.example.demo.dto.payment;
 
 import com.example.demo.model.Payment.PaymentMethod;
 import lombok.Data;

@@ -1,9 +1,9 @@
 package com.example.demo.service;
 
-import com.example.demo.dto.CreateCustomerDto;
+import com.example.demo.dto.customer.CreateCustomerDto;
 import com.example.demo.integration.CustomerIntegrationService;
-import com.example.demo.model.Customer;
-import com.example.demo.model.Status;
+import com.example.demo.model.customer.Customer;
+import com.example.demo.model.customer.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
