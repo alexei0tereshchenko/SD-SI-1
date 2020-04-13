@@ -1,4 +1,4 @@
-package com.example.demo.model.Payment;
+package com.example.demo.model.payment;
 
 import com.example.demo.annotations.Attribute;
 import com.example.demo.annotations.ObjectType;
@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -17,7 +17,7 @@ public class Payment extends Base {
     private String description;
 
     @Attribute(attrId = "15")
-    private LocalDateTime createdWhen;
+    private Date createdWhen;
 
     @Attribute(attrId = "3")
     private BigDecimal amount;
@@ -32,5 +32,5 @@ public class Payment extends Base {
     private String createdBy;
 
     @Attribute(attrId = "18")
-    private LocalDateTime cancellationDate;
+    private Date cancellationDate;
 }
