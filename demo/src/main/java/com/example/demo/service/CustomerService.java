@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 public class CustomerService {
 
     @Autowired
-    CustomerIntegrationService customerIntegrationServiceInt;
+    private CustomerIntegrationService customerIntegrationServiceInt;
 
     public Customer createCustomer(CreateCustomerDto source) {
         Customer customer = new Customer();

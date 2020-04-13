@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 public class CustomerController {
 
     @Autowired
-    CustomerService customerService;
+    private CustomerService customerService;
 
     @PostMapping(value = "/create")
     public Customer createCustomer(@RequestBody CreateCustomerDto source) {

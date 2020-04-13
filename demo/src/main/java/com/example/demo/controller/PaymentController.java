@@ -15,7 +15,7 @@ import java.util.Date;
 public class PaymentController {
 
     @Autowired
-    PaymentService paymentService;
+    private PaymentService paymentService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
