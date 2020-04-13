@@ -16,3 +16,8 @@ INSERT INTO demo_eav.attribute (attribute_id, attr_type, name) VALUES (15, 0, 'C
 INSERT INTO demo_eav.attribute (attribute_id, attr_type, name) VALUES (16, 0, 'Payment Method');
 INSERT INTO demo_eav.attribute (attribute_id, attr_type, name) VALUES (17, 0, 'Created By');
 INSERT INTO demo_eav.attribute (attribute_id, attr_type, name) VALUES (18, 0, 'Cancellation Date');
+
+INSERT INTO demo_eav.attribute (attribute_id, attr_type, name) VALUES (21, 0, 'OTS Status');
+INSERT INTO demo_eav.attribute (attribute_id, attr_type, name) VALUES (22, 0, 'Termination Reason');
+INSERT INTO demo_eav.attribute (attribute_id, attr_type, name) VALUES (23, 0, 'Instalments');
+INSERT INTO demo_eav.attribute (attribute_id, attr_type, name) VALUES (24, 0, 'Cancellation Date OTS');
