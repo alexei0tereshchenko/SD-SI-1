@@ -2,10 +2,10 @@ package com.example.demo.dto.adjustment;
 
 import com.example.demo.model.adjustment.AdjustmentStatus;
 
-import java.util.Calendar;
+import java.util.Date;
 
 public class CreateAdjustmentDto {
     public AdjustmentStatus adjustmentStatus;
-    public Calendar approvedDate;
+    public Date approvedDate;
     public String rejectedReason;
 }

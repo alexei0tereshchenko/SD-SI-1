@@ -20,4 +20,8 @@ INSERT INTO demo_eav.attr_object_type (object_type_id, attr_id) VALUES (5, 3);
 INSERT INTO demo_eav.attr_object_type (object_type_id, attr_id) VALUES (5, 21);
 INSERT INTO demo_eav.attr_object_type (object_type_id, attr_id) VALUES (5, 22);
 INSERT INTO demo_eav.attr_object_type (object_type_id, attr_id) VALUES (5, 23);
+
 INSERT INTO demo_eav.attr_object_type (object_type_id, attr_id) VALUES (5, 24);
+INSERT INTO demo_eav.attr_object_type (object_type_id, attr_id) VALUES (6, 25);
+INSERT INTO demo_eav.attr_object_type (object_type_id, attr_id) VALUES (6, 26);
+INSERT INTO demo_eav.attr_object_type (object_type_id, attr_id) VALUES (6, 27);

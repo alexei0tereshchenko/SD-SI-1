@@ -1,18 +1,19 @@
 package com.example.demo.model.adjustment;
 import com.example.demo.annotations.Attribute;
 import com.example.demo.annotations.ObjectType;
+import com.example.demo.model.Base;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import java.util.Calendar;
+import java.util.Date;
 
 @Data
 @EqualsAndHashCode()
 @ObjectType(objectTypeId = "4")
-public class Adjustment {
+public class Adjustment extends Base {
     @Attribute(attrId = "14")
     public AdjustmentStatus adjustmentStatus;
     @Attribute(attrId = "15")
-    public Calendar approvedDate;
+    public Date approvedDate;
     @Attribute(attrId = "16")
     public String rejectedReason;
 
