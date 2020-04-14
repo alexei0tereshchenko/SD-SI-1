@@ -12,10 +12,6 @@ INSERT INTO demo_eav.attribute (attribute_id, attr_type, name) VALUES (11, 0, 'D
 INSERT INTO demo_eav.attribute (attribute_id, attr_type, name) VALUES (12, 0, 'Gender');
 INSERT INTO demo_eav.attribute (attribute_id, attr_type, name) VALUES (13, 1, 'Contact');
 
-INSERT INTO demo_eav.attribute (attribute_id, attr_type, name) VALUES (25, 0, 'Adjustment Status');
-INSERT INTO demo_eav.attribute (attribute_id, attr_type, name) VALUES (26, 0, 'Approved Date');
-INSERT INTO demo_eav.attribute (attribute_id, attr_type, name) VALUES (27, 0, 'Rejected Reason');
-
 INSERT INTO demo_eav.attribute (attribute_id, attr_type, name) VALUES (14, 0, 'Description');
 INSERT INTO demo_eav.attribute (attribute_id, attr_type, name) VALUES (15, 0, 'Created When');
 INSERT INTO demo_eav.attribute (attribute_id, attr_type, name) VALUES (16, 0, 'Payment Method');
@@ -26,3 +22,7 @@ INSERT INTO demo_eav.attribute (attribute_id, attr_type, name) VALUES (21, 0, 'O
 INSERT INTO demo_eav.attribute (attribute_id, attr_type, name) VALUES (22, 0, 'Termination Reason');
 INSERT INTO demo_eav.attribute (attribute_id, attr_type, name) VALUES (23, 0, 'Instalments');
 INSERT INTO demo_eav.attribute (attribute_id, attr_type, name) VALUES (24, 0, 'Cancellation Date OTS');
+
+INSERT INTO demo_eav.attribute (attribute_id, attr_type, name) VALUES (25, 0, 'Adjustment Status');
+INSERT INTO demo_eav.attribute (attribute_id, attr_type, name) VALUES (26, 0, 'Approved Date');
+INSERT INTO demo_eav.attribute (attribute_id, attr_type, name) VALUES (27, 0, 'Rejected Reason');
