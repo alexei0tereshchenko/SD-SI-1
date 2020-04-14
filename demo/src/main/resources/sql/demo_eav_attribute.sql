@@ -11,3 +11,6 @@ INSERT INTO demo_eav.attribute (attribute_id, attr_type, name) VALUES (10, 0, 'B
 INSERT INTO demo_eav.attribute (attribute_id, attr_type, name) VALUES (11, 0, 'Date');
 INSERT INTO demo_eav.attribute (attribute_id, attr_type, name) VALUES (12, 0, 'Gender');
 INSERT INTO demo_eav.attribute (attribute_id, attr_type, name) VALUES (13, 1, 'Contact');
+INSERT INTO demo_eav.attribute (attribute_id, attr_type, name) VALUES (25, 0, 'Adjustment Status');
+INSERT INTO demo_eav.attribute (attribute_id, attr_type, name) VALUES (26, 0, 'Approved Date');
+INSERT INTO demo_eav.attribute (attribute_id, attr_type, name) VALUES (27, 0, 'Rejected Reason');
