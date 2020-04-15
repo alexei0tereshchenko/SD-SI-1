@@ -26,3 +26,7 @@ INSERT INTO demo_eav.attribute (attribute_id, attr_type, name) VALUES (24, 0, 'C
 INSERT INTO demo_eav.attribute (attribute_id, attr_type, name) VALUES (25, 0, 'Adjustment Status');
 INSERT INTO demo_eav.attribute (attribute_id, attr_type, name) VALUES (26, 0, 'Approved Date');
 INSERT INTO demo_eav.attribute (attribute_id, attr_type, name) VALUES (27, 0, 'Rejected Reason');
+
+INSERT INTO demo_eav.attribute (attribute_id, attr_type, name) VALUES (28, 0, 'Bill Status');
+INSERT INTO demo_eav.attribute (attribute_id, attr_type, name) VALUES (29, 0, 'Bill Style');
+INSERT INTO demo_eav.attribute (attribute_id, attr_tupe, name) VALUES (30, 0, 'Bill Number');
