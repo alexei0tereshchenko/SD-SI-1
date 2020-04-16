@@ -16,4 +16,6 @@ public class Bill extends Base {
     public BillStyle BillStyle;
     @Attribute(attrId = "30")
     public long BillNumber;
+    @Attribute (attrId = "31")
+    public String Specification;
 }

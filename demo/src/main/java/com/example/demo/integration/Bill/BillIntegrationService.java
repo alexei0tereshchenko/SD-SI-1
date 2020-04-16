@@ -46,7 +46,7 @@ public class BillIntegrationService {
     @Transactional
     public Bill getBill(Long id){
         Bill b = new Bill();
-        b.setDescription("follow the rules");
+        b.setSpecification("follow the rules");
         return b;
     }
 }

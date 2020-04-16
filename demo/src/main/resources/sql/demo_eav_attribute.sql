@@ -30,3 +30,4 @@ INSERT INTO demo_eav.attribute (attribute_id, attr_type, name) VALUES (27, 0, 'R
 INSERT INTO demo_eav.attribute (attribute_id, attr_type, name) VALUES (28, 0, 'Bill Status');
 INSERT INTO demo_eav.attribute (attribute_id, attr_type, name) VALUES (29, 0, 'Bill Style');
 INSERT INTO demo_eav.attribute (attribute_id, attr_tupe, name) VALUES (30, 0, 'Bill Number');
+INSERT INTO demo_eav.attribute (attribute_id, attr_tupe, name) VALUES (31, 0, 'Specification');
