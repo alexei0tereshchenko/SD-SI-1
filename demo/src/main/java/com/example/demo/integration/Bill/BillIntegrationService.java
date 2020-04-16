@@ -3,6 +3,7 @@ package com.example.demo.integration.Bill;
 import com.example.demo.dto.Bill.UpdateBillDto;
 import com.example.demo.eav.converter.EavBaseConverter;
 import com.example.demo.model.Bill.Bill;
+import com.example.demo.eav.model.object.Object;
 import com.example.demo.repository.AttributeRepository;
 import com.example.demo.repository.ObjectRepository;
 import com.example.demo.repository.ParamRepository;
