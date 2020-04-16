@@ -13,7 +13,7 @@ public class Bill extends Base {
     @Attribute(attrId = "28")
     public BillStatus BillStatus;
     @Attribute(attrId = "29")
-    public enum BillStyle;
+    public BillStyle BillStyle;
     @Attribute(attrId = "30")
     public long BillNumber;
 }
