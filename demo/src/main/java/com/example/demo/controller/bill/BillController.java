@@ -1,7 +1,7 @@
-package com.example.demo.controller.Bill;
+package com.example.demo.controller.bill;
 
-import com.example.demo.dto.Bill.CreateBillDto;
-import com.example.demo.dto.Bill.UpdateBillDto;
+import com.example.demo.dto.bill.CreateBillDto;
+import com.example.demo.dto.bill.UpdateBillDto;
 import com.example.demo.model.Bill.Bill;
 import com.example.demo.service.Bill.BillService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/bill")
 public class BillController {
     @Autowired
-    BillService billService;
+    private BillService billService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

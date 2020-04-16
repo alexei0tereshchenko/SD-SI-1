@@ -1,4 +1,4 @@
-package com.example.demo.dto.Bill;
+package com.example.demo.dto.bill;
 
 import com.example.demo.model.Bill.BillStatus;
 import com.example.demo.model.Bill.BillStyle;

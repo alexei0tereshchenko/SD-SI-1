@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AdjustmentController {
     @Autowired
-    AdjustmentService adjustmentService;
+    private AdjustmentService adjustmentService;
 
     @RequestMapping("/adjustment/create")
     public Adjustment createAdjustment(@RequestBody CreateAdjustmentDto source){

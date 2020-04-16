@@ -1,7 +1,7 @@
 package com.example.demo.service.Bill;
 
-import com.example.demo.dto.Bill.CreateBillDto;
-import com.example.demo.dto.Bill.UpdateBillDto;
+import com.example.demo.dto.bill.CreateBillDto;
+import com.example.demo.dto.bill.UpdateBillDto;
 import com.example.demo.integration.Bill.BillIntegrationService;
 import com.example.demo.model.Bill.Bill;
 import org.springframework.beans.factory.annotation.Autowired;

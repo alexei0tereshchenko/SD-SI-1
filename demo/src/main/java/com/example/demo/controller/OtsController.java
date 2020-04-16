@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class OtsController {
     @Autowired
-    OtsService otsService;
+    private OtsService otsService;
 
     @GetMapping(value = "/{id}")
     public Ots getOts(@PathVariable Long id){
