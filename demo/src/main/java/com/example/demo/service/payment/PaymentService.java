@@ -14,7 +14,7 @@ import java.util.Date;
 public class PaymentService {
 
     @Autowired
-    PaymentIntegrationService paymentIntegrationServiceInt;
+    private PaymentIntegrationService paymentIntegrationServiceInt;
 
     public Payment createPayment(CreatePaymentDto source){
         Payment payment = new Payment();

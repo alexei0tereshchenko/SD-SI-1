@@ -22,7 +22,7 @@ import java.util.Date;
 import java.util.List;
 
 @Component
-public class EavBaseConverter {
+public abstract class EavBaseConverter {
 
     @Autowired
     private ObjectTypeRepository objectTypeRepository;

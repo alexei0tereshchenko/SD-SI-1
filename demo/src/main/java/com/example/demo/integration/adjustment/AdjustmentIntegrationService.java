@@ -1,8 +1,8 @@
-package com.example.demo.integration;
+package com.example.demo.integration.adjustment;
 
+import com.example.demo.eav.converter.EavBaseConverter;
 import com.example.demo.eav.model.object.Object;
-import com.example.demo.integration.converters.CustomerConverter;
-import com.example.demo.model.customer.Customer;
+import com.example.demo.model.adjustment.Adjustment;
 import com.example.demo.repository.AttributeRepository;
 import com.example.demo.repository.ObjectRepository;
 import com.example.demo.repository.ParamRepository;
@@ -12,8 +12,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 
 @Service
-public class CustomerIntegrationService {
-
+public class AdjustmentIntegrationService {
     @Autowired
     private ObjectRepository objectRepository;
 
@@ -24,11 +23,11 @@ public class CustomerIntegrationService {
     private AttributeRepository attributeRepository;
 
     @Autowired
-    private CustomerConverter customerConverter;
+    private EavBaseConverter eavBaseConverter;
 
     @Transactional
-    public void createCustomer(Customer source) {
-        Object customerDataObject = objectRepository.save(customerConverter.convertToEav(source));
+    public void createAdjustment(Adjustment source) {
+        Object customerDataObject = objectRepository.save(eavBaseConverter.convertToEav(source));
         customerDataObject.getParams().forEach(
                 param -> {
                     param.setObject(customerDataObject);
