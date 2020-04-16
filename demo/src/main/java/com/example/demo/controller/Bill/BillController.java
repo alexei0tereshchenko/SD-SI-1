@@ -1,6 +1,7 @@
 package com.example.demo.controller.Bill;
 
 import com.example.demo.dto.Bill.CreateBillDto;
+import com.example.demo.dto.Bill.UpdateBillDto;
 import com.example.demo.model.Bill.Bill;
 import com.example.demo.service.Bill.BillService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ public class BillController {
     }
 
     @PutMapping
-    public void putBill(@RequestBody CreateBillDto source){
+    public void putBill(@RequestBody UpdateBillDto source){
         billService.updateBill(source);
     }
 
