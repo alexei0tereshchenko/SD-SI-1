@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 public interface ReferenceRepository extends CrudRepository<Reference, ReferenceId> {
 
     @Modifying
-    @Query(value = "INSERT into reference (object_id, attr_id, reference) VALUES (:object_id, :attrId, :reference)", nativeQuery = true)
+    @Query(value = "INSERT into reference (object_id, attr_id, reference) VALUES (:object_id, :attr_id, :reference)", nativeQuery = true)
     void saveReference (@Param("object_id") Long objectId,
                         @Param("attr_id") Long attrId,
                         @Param("reference") Long reference);

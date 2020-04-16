@@ -1,4 +1,4 @@
-package com.example.demo.integration.Bill;
+package com.example.demo.integration.bill;
 
 import com.example.demo.dto.bill.UpdateBillDto;
 import com.example.demo.eav.converter.EavBaseConverter;

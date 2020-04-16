@@ -1,7 +1,7 @@
 package com.example.demo.integration;
 
-import com.example.demo.eav.converter.EavBaseConverter;
 import com.example.demo.eav.model.object.Object;
+import com.example.demo.integration.converters.CustomerConverter;
 import com.example.demo.model.customer.Customer;
 import com.example.demo.repository.AttributeRepository;
 import com.example.demo.repository.ObjectRepository;
@@ -24,11 +24,11 @@ public class CustomerIntegrationService {
     private AttributeRepository attributeRepository;
 
     @Autowired
-    private EavBaseConverter eavBaseConverter;
+    private CustomerConverter customerConverter;
 
     @Transactional
     public void createCustomer(Customer source) {
-        Object customerDataObject = objectRepository.save(eavBaseConverter.convertToEav(source));
+        Object customerDataObject = objectRepository.save(customerConverter.convertToEav(source));
         customerDataObject.getParams().forEach(
                 param -> {
                     param.setObject(customerDataObject);
