@@ -6,8 +6,6 @@ import com.example.demo.eav.model.object.Object;
 import com.example.demo.eav.model.object.Param;
 import com.example.demo.eav.model.object.Reference;
 import com.example.demo.model.Base;
-import com.example.demo.model.customer.Status;
-import com.example.demo.model.payment.*;
 import com.example.demo.repository.ObjectRepository;
 import com.example.demo.repository.ObjectTypeRepository;
 import lombok.Getter;
@@ -15,8 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
-import java.math.BigDecimal;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
