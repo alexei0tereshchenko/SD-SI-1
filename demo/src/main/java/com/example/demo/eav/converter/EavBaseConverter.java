@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class EavBaseConverter {
+public abstract class EavBaseConverter {
 
     @Autowired
     private ObjectTypeRepository objectTypeRepository;
@@ -77,4 +77,5 @@ public class EavBaseConverter {
 
         return target;
     }
+    public abstract Base convertFromEav (Object source);
 }
