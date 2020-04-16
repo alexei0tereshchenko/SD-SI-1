@@ -6,3 +6,4 @@ INSERT INTO demo_eav.object_type (object_type_id, parent_id, name) VALUES (6, 1,
 
 INSERT INTO demo_eav.object_type (object_type_id, parent_id, name) VALUES (4, 1, 'Payment');
 INSERT INTO demo_eav.object_type (object_type_id, parent_id, name) VALUES (5, 1, 'One Time Service');
+INSERT INTO demo_eav.object_type (object_type_id, parent_id, name) VALUES (7, 1, 'Bill');
