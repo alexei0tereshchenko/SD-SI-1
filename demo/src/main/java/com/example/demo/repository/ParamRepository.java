@@ -17,4 +17,8 @@ public interface ParamRepository extends CrudRepository<Param, ParamId> {
     void saveParam(@org.springframework.data.repository.query.Param("p_value") String value,
                               @org.springframework.data.repository.query.Param("object_id") Long objectId,
                               @org.springframework.data.repository.query.Param("attr_id") Long attrId);
+
+    @Modifying
+    @Query(value = "DELETE FROM param WHERE (object_id = :objectId)", nativeQuery = true)
+    void deleteParamsForObject(@org.springframework.data.repository.query.Param("objectId") Long objectId);
 }

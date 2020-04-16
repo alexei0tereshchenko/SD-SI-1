@@ -9,7 +9,7 @@ import java.util.Date;
 
 @Data
 public class UpdatePaymentDto {
-    private Long parentId; //id of the connected billing account
+    //private Long parentId; //id of the connected billing account
     private String description;
     private Date createdWhen;
     private BigDecimal amount;

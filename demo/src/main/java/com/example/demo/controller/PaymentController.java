@@ -15,7 +15,7 @@ import java.util.Date;
 public class PaymentController {
 
     @Autowired
-    PaymentService paymentService;
+    private PaymentService paymentService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -23,9 +23,9 @@ public class PaymentController {
         return paymentService.createPayment(source);
     }
 
-    @PutMapping
-    public void putPayment(@RequestBody UpdatePaymentDto source){
-        paymentService.updatePayment(source);
+    @PutMapping(value = "/{id}")
+    public void putPayment(@RequestBody UpdatePaymentDto source, @PathVariable Long id) throws PaymentService.PaymentServiceException {
+        paymentService.updatePayment(source, id);
     }
 
     @GetMapping(value = "/{id}")

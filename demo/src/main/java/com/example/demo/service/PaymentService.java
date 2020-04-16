@@ -39,11 +39,22 @@ public class PaymentService {
        return paymentIntegrationServiceInt.getPayment(id);
     }
 
-    public void updatePayment(UpdatePaymentDto source){
-        paymentIntegrationServiceInt.updatePayment(source);
+    public void updatePayment(UpdatePaymentDto source, Long id) throws PaymentServiceException {
+        try{
+            paymentIntegrationServiceInt.updatePayment(source, id);
+        }
+        catch (Exception e){
+            throw new PaymentServiceException("Exception during integration", e);
+        }
     }
 
     public void deletePayment(Long id){
         paymentIntegrationServiceInt.deletePayment(id);
+    }
+
+    public static class PaymentServiceException extends Exception {
+        public PaymentServiceException(String msg, Exception cause) {
+            super(msg, cause);
+        }
     }
 }
