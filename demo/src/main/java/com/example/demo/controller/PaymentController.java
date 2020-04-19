@@ -17,13 +17,20 @@ public class PaymentController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Payment createPayment(@RequestBody CreatePaymentDto source){
-        return paymentService.createPayment(source);
+    public Payment createPayment(@RequestBody CreatePaymentDto source) throws PaymentControllerException{
+        try{ return paymentService.createPayment(source); }
+        catch (PaymentService.PaymentServiceException e){ throw new PaymentControllerException(e); }
     }
 
     @PutMapping(value = "/{id}")
     public void putPayment(@RequestBody UpdatePaymentDto source, @PathVariable Long id) throws PaymentControllerException {
         try{ paymentService.updatePayment(source, id); }
+        catch (PaymentService.PaymentServiceException e){ throw new PaymentControllerException(e); }
+    }
+
+    @PutMapping(value = "/cancel/{id}")
+    public void cancelPayment(@PathVariable Long id) throws PaymentControllerException {
+        try{ paymentService.cancelPayment(id); }
         catch (PaymentService.PaymentServiceException e){ throw new PaymentControllerException(e); }
     }
 

@@ -16,24 +16,30 @@ public class PaymentService {
     @Autowired
     private PaymentIntegrationService paymentIntegrationServiceInt;
 
-    public Payment createPayment(CreatePaymentDto source){
-        Payment payment = new Payment();
+    public Payment createPayment(CreatePaymentDto source) throws PaymentServiceException{
+        try{
+            Payment payment = new Payment();
 
-        //default parameters
-        payment.setObjectTypeId(4L);
-        payment.setStatus(PaymentStatus.PENDING);
-        payment.setCreatedWhen(new Date());
-        payment.setCancellationDate(new Date());
-        payment.setDescription("DEFAULT_DESCRIPTION");
+            //default parameters
+            payment.setObjectTypeId(4L);
+            payment.setStatus(PaymentStatus.PENDING);
+            payment.setCreatedWhen(new Date());
+            payment.setCancellationDate(new Date());
+            payment.setDescription("DEFAULT_DESCRIPTION");
 
-        //custom parameters
-        payment.setParentId(source.getParentId()); // temp
-        payment.setAmount(source.getAmount());
-        payment.setCreatedBy(source.getCreatedBy());
-        payment.setPaymentMethod(source.getPaymentMethod());
+            //custom parameters
+            payment.setParentId(source.getParentId()); // temp
+            payment.setAmount(source.getAmount());
+            payment.setCreatedBy(source.getCreatedBy());
+            payment.setPaymentMethod(source.getPaymentMethod());
 
-        paymentIntegrationServiceInt.createPayment(payment);
-        return payment;
+            paymentIntegrationServiceInt.createPayment(payment);
+            return payment;
+        }
+        catch (Exception e){
+            throw new PaymentServiceException(e);
+        }
+
     }
 
     public Payment getPayment(Long id) throws PaymentServiceException {
@@ -43,6 +49,11 @@ public class PaymentService {
 
     public void updatePayment(UpdatePaymentDto source, Long id) throws PaymentServiceException {
         try{ paymentIntegrationServiceInt.updatePayment(source, id); }
+        catch (Exception e){ throw new PaymentServiceException(e); }
+    }
+
+    public void cancelPayment(Long id) throws PaymentServiceException {
+        try{ paymentIntegrationServiceInt.cancelPayment(id); }
         catch (Exception e){ throw new PaymentServiceException(e); }
     }
 

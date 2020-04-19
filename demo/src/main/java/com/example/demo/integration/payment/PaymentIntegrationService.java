@@ -13,6 +13,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -29,13 +30,19 @@ public class PaymentIntegrationService {
     private PaymentConverter paymentConverter;
 
     @Transactional
-    public void createPayment(Payment source){
-        Object paymentDataObject = objectRepository.save(paymentConverter.convertToEav(source));
-        paymentDataObject.getParams().forEach(
-                param -> {
-                    param.setObject(paymentDataObject);
-                    paramRepository.saveParam(param.getValue(), param.getObject().getObjectId(), param.getAttribute().getAttributeId());
-                });
+    public void createPayment(Payment source) throws PaymentIntegrationException {
+        if (objectRepository.countObjectsByParent(source.getParentId(), source.getObjectTypeId()) >= Payment.PAYMENTS_LIMIT_FOR_BILL_ACCOUNT) {
+            throw new PaymentIntegrationException("Can't create payment connected for billing account with ID:" + source.getParentId()
+                    + ", because limit of payments for this billing account has already been reached");
+        }
+        else{
+            Object paymentDataObject = objectRepository.save(paymentConverter.convertToEav(source));
+            paymentDataObject.getParams().forEach(
+                    param -> {
+                        param.setObject(paymentDataObject);
+                        paramRepository.saveParam(param.getValue(), param.getObject().getObjectId(), param.getAttribute().getAttributeId());
+                    });
+        }
     }
 
     public Payment getPayment(Long objectId) throws PaymentIntegrationException {
@@ -63,10 +70,15 @@ public class PaymentIntegrationService {
     public void updatePayment(UpdatePaymentDto source, Long objectId) throws PaymentIntegrationException {
         try{
             Object paymentObject = objectRepository.findById(objectId).get();
+            List<Param> params = paymentObject.getParams();
+            String paymentStatus = findParamByAttributeId(params, 6L).getValue();
+            if(paymentStatus.equals("CANCELLED")){
+                throw new PaymentIntegrationException("Can't update payment because it's already cancelled");
+            }
+
             paymentObject.setName(source.getName());
             paymentObject.setParentObject(objectRepository.findById(source.getParentId()).get());
 
-            List<Param> params = paymentObject.getParams();
             findParamByAttributeId(params, 14L).setValue(source.getDescription());
             findParamByAttributeId(params, 15L).setValue(paymentConverter.getDateFormatter().format(source.getCreatedWhen()));
             findParamByAttributeId(params, 3L).setValue(source.getAmount().toString());
@@ -74,6 +86,25 @@ public class PaymentIntegrationService {
             findParamByAttributeId(params, 16L).setValue(source.getPaymentMethod().toString());
             findParamByAttributeId(params, 17L).setValue(source.getCreatedBy().toString());
             findParamByAttributeId(params, 18L).setValue(paymentConverter.getDateFormatter().format(source.getCancellationDate()));
+            objectRepository.save(paymentObject);
+        }
+        catch (NoSuchElementException e){
+            throw new PaymentIntegrationException("Can't update payment because object with ID:" + objectId + " wasn't found", e);
+        }
+    }
+
+    @Transactional
+    public void cancelPayment(Long objectId) throws PaymentIntegrationException {
+        try{
+            Object paymentObject = objectRepository.findById(objectId).get();
+            List<Param> params = paymentObject.getParams();
+            String paymentStatus = findParamByAttributeId(params, 6L).getValue();
+            if(paymentStatus.equals("CANCELLED")){
+                throw new PaymentIntegrationException("Can't cancel payment because it's already cancelled");
+            }
+
+            findParamByAttributeId(params, 6L).setValue("CANCELLED");
+            findParamByAttributeId(params, 18L).setValue(paymentConverter.getDateFormatter().format(new Date()));
             objectRepository.save(paymentObject);
         }
         catch (NoSuchElementException e){
@@ -93,6 +124,10 @@ public class PaymentIntegrationService {
     public static class PaymentIntegrationException extends Exception {
         public PaymentIntegrationException(String msg, Exception cause) {
             super(msg, cause);
+        }
+
+        public PaymentIntegrationException(String msg) {
+            super(msg);
         }
     }
 }
