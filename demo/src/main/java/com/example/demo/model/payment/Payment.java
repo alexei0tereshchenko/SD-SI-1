@@ -13,6 +13,8 @@ import java.util.Date;
 @Data
 @ObjectType(objectTypeId = "4")
 public class Payment extends Base {
+    static public final int PAYMENTS_LIMIT_FOR_BILL_ACCOUNT = 5;
+
     @Attribute(attrId = "14")
     private String description;
 

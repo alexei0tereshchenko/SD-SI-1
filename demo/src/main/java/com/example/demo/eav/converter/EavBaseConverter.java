@@ -8,21 +8,27 @@ import com.example.demo.eav.model.object.Reference;
 import com.example.demo.model.Base;
 import com.example.demo.repository.ObjectRepository;
 import com.example.demo.repository.ObjectTypeRepository;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Component
-public class EavBaseConverter {
+public abstract class EavBaseConverter {
 
     @Autowired
     private ObjectTypeRepository objectTypeRepository;
 
     @Autowired
     private ObjectRepository objectRepository;
+
+    @Getter
+    private static SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     public Object convertToEav(Base source) {
         Object target = new Object();
@@ -48,7 +54,12 @@ public class EavBaseConverter {
                 param.setAttribute(attribute);
                 param.setObject(target);
                 try {
-                    param.setValue(declaredField.get(source).toString());
+                    if(declaredField.getType() == Date.class){
+                        param.setValue(dateFormatter.format(declaredField.get(source)));
+                    }
+                    else {
+                        param.setValue(declaredField.get(source).toString());
+                    }
                 } catch (IllegalAccessException e) {
                     throw new RuntimeException(e);
                 }
@@ -77,4 +88,6 @@ public class EavBaseConverter {
 
         return target;
     }
+
+    public abstract Base convertFromEav (Object source);
 }

@@ -9,6 +9,7 @@ import java.io.Serializable;
 
 @Data
 @Entity
+@IdClass(ReferenceId.class)
 public class Reference implements Serializable {
     @Id
     @ManyToOne(cascade = CascadeType.ALL)
