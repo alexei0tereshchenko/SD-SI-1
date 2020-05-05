@@ -8,13 +8,13 @@ import java.util.Date;
 
 @Data
 @EqualsAndHashCode()
-@ObjectType(objectTypeId = "4")
+@ObjectType(objectTypeId = "6")
 public class Adjustment extends Base {
-    @Attribute(attrId = "14")
+    public static final int ADJUSTMENT_LIMIT = 5;
+    @Attribute(attrId = "25")
     public AdjustmentStatus adjustmentStatus;
-    @Attribute(attrId = "15")
+    @Attribute(attrId = "26")
     public Date approvedDate;
-    @Attribute(attrId = "16")
+    @Attribute(attrId = "27")
     public String rejectedReason;
-
 }
