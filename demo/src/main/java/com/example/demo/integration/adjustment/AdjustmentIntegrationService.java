@@ -28,7 +28,6 @@ public class AdjustmentIntegrationService {
     @Autowired
     private AttributeRepository attributeRepository;
 
-    @Autowired
     private EavBaseConverter eavBaseConverter;
     @Autowired
     private AdjustmentConverter adjustmentConverter;
