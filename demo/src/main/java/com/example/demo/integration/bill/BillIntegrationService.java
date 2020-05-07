@@ -27,7 +27,6 @@ public class BillIntegrationService {
     @Autowired
     private AttributeRepository attributeRepository;
 
-    @Autowired
     private EavBaseConverter eavBaseConverter;
 
     @Autowired
