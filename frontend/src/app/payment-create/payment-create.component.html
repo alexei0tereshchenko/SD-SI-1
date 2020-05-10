@@ -1,0 +1,38 @@
+<div class="container">
+  <h3 mat-dialog-title>Create payment</h3>
+
+  <form class="mat-dialog-content" (ngSubmit)="submit" #createForm="ngForm">
+
+    <div class="form">
+      <mat-form-field color="accent">
+        <input matInput class="form-control" placeholder="Amount" [(ngModel)]="data.amount"
+               name="amount" required [pattern]="'[1-9][0-9]*'" #amount="ngModel">
+        <mat-error *ngIf="amount.errors?.required">Field required</mat-error>
+        <mat-error *ngIf="amount.errors?.pattern">Amount should be a number</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="form">
+      <mat-form-field color="accent">
+        <mat-select [(value)]="data.paymentMethod" placeholder="Payment method">
+          <mat-option value="CASH">CASH</mat-option>
+          <mat-option value="BANK_CARD">CARD</mat-option>
+          <mat-option value="POSTAL">POSTAL</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="form">
+      <mat-form-field color="accent">
+        <input matInput class="form-control" placeholder="Created by" [(ngModel)]="data.createdBy"
+               name="createdBy" required #createdBy="ngModel">
+        <mat-error *ngIf="createdBy.errors?.required">Field required</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div mat-dialog-actions>
+      <button mat-button [type]="submit" [disabled]="!createForm.valid" [mat-dialog-close]="1" (click)="submit()">Create</button>
+      <button mat-button (click)="cancel()" tabindex="-1">Cancel</button>
+    </div>
+  </form>
+</div>
