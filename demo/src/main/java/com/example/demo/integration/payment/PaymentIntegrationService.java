@@ -13,6 +13,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -55,6 +56,21 @@ public class PaymentIntegrationService {
         }
     }
 
+    public List<Payment> getBillingAccountPayments(Long accountId) throws PaymentIntegrationException {
+        List<Payment> payments = new ArrayList<>();
+        try{
+            List<Object> results = new ArrayList<>();
+            objectRepository.selectObjectsForParent(accountId, 4L).forEach(results::add);
+            for (Object paymentObject:results) {
+                payments.add((Payment)paymentConverter.convertFromEav(paymentObject));
+            }
+            return payments;
+        }
+        catch(NoSuchElementException e){
+            throw new PaymentIntegrationException("Can't find payments for account with ID:" + accountId, e);
+        }
+    }
+
     @Transactional
     public void deletePayment(Long objectId) throws PaymentIntegrationException {
         try{
@@ -67,7 +83,7 @@ public class PaymentIntegrationService {
     }
 
     @Transactional
-    public void updatePayment(UpdatePaymentDto source, Long objectId) throws PaymentIntegrationException {
+    public Payment updatePayment(UpdatePaymentDto source, Long objectId) throws PaymentIntegrationException {
         try{
             Object paymentObject = objectRepository.findById(objectId).get();
             List<Param> params = paymentObject.getParams();
@@ -86,7 +102,9 @@ public class PaymentIntegrationService {
             findParamByAttributeId(params, 16L).setValue(source.getPaymentMethod().toString());
             findParamByAttributeId(params, 17L).setValue(source.getCreatedBy().toString());
             findParamByAttributeId(params, 18L).setValue(paymentConverter.getDateFormatter().format(source.getCancellationDate()));
+            Payment p = (Payment)paymentConverter.convertFromEav(paymentObject);
             objectRepository.save(paymentObject);
+            return p;
         }
         catch (NoSuchElementException e){
             throw new PaymentIntegrationException("Can't update payment because object with ID:" + objectId + " wasn't found", e);
@@ -94,7 +112,7 @@ public class PaymentIntegrationService {
     }
 
     @Transactional
-    public void cancelPayment(Long objectId) throws PaymentIntegrationException {
+    public Payment cancelPayment(Long objectId) throws PaymentIntegrationException {
         try{
             Object paymentObject = objectRepository.findById(objectId).get();
             List<Param> params = paymentObject.getParams();
@@ -105,7 +123,9 @@ public class PaymentIntegrationService {
 
             findParamByAttributeId(params, 6L).setValue("CANCELLED");
             findParamByAttributeId(params, 18L).setValue(paymentConverter.getDateFormatter().format(new Date()));
+            Payment p = (Payment)paymentConverter.convertFromEav(paymentObject);
             objectRepository.save(paymentObject);
+            return p;
         }
         catch (NoSuchElementException e){
             throw new PaymentIntegrationException("Can't update payment because object with ID:" + objectId + " wasn't found", e);

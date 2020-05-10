@@ -8,7 +8,9 @@ import com.example.demo.model.payment.PaymentStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class PaymentService {
@@ -32,6 +34,7 @@ public class PaymentService {
             payment.setAmount(source.getAmount());
             payment.setCreatedBy(source.getCreatedBy());
             payment.setPaymentMethod(source.getPaymentMethod());
+            payment.setName("payment-" + source.getAmount().toString() + "-" + (new SimpleDateFormat("yyyyMMddHHmmss").format(payment.getCreatedWhen())));
 
             paymentIntegrationServiceInt.createPayment(payment);
             return payment;
@@ -47,13 +50,18 @@ public class PaymentService {
         catch (Exception e){ throw new PaymentServiceException(e); }
     }
 
-    public void updatePayment(UpdatePaymentDto source, Long id) throws PaymentServiceException {
-        try{ paymentIntegrationServiceInt.updatePayment(source, id); }
+    public List<Payment> getBillingAccountPayments(Long accountId) throws PaymentServiceException {
+        try{ return paymentIntegrationServiceInt.getBillingAccountPayments(accountId); }
         catch (Exception e){ throw new PaymentServiceException(e); }
     }
 
-    public void cancelPayment(Long id) throws PaymentServiceException {
-        try{ paymentIntegrationServiceInt.cancelPayment(id); }
+    public Payment updatePayment(UpdatePaymentDto source, Long id) throws PaymentServiceException {
+        try{ return paymentIntegrationServiceInt.updatePayment(source, id); }
+        catch (Exception e){ throw new PaymentServiceException(e); }
+    }
+
+    public Payment cancelPayment(Long id) throws PaymentServiceException {
+        try{ return paymentIntegrationServiceInt.cancelPayment(id); }
         catch (Exception e){ throw new PaymentServiceException(e); }
     }
 

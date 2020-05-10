@@ -8,8 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController()
 @RequestMapping("/payment")
+@CrossOrigin
 public class PaymentController {
 
     @Autowired
@@ -23,20 +26,26 @@ public class PaymentController {
     }
 
     @PutMapping(value = "/{id}")
-    public void putPayment(@RequestBody UpdatePaymentDto source, @PathVariable Long id) throws PaymentControllerException {
-        try{ paymentService.updatePayment(source, id); }
+    public Payment putPayment(@RequestBody UpdatePaymentDto source, @PathVariable Long id) throws PaymentControllerException {
+        try{ return paymentService.updatePayment(source, id); }
         catch (PaymentService.PaymentServiceException e){ throw new PaymentControllerException(e); }
     }
 
     @PutMapping(value = "/cancel/{id}")
-    public void cancelPayment(@PathVariable Long id) throws PaymentControllerException {
-        try{ paymentService.cancelPayment(id); }
+    public Payment cancelPayment(@PathVariable Long id) throws PaymentControllerException {
+        try{ return paymentService.cancelPayment(id); }
         catch (PaymentService.PaymentServiceException e){ throw new PaymentControllerException(e); }
     }
 
     @GetMapping(value = "/{id}")
     public Payment getPayment(@PathVariable Long id) throws PaymentControllerException {
         try{ return paymentService.getPayment(id); }
+        catch (PaymentService.PaymentServiceException e){ throw new PaymentControllerException(e); }
+    }
+
+    @GetMapping(value = "/account/{accountId}")
+    public List<Payment> getBillingAccountPayments(@PathVariable Long accountId) throws PaymentControllerException {
+        try{ return paymentService.getBillingAccountPayments(accountId); }
         catch (PaymentService.PaymentServiceException e){ throw new PaymentControllerException(e); }
     }
 

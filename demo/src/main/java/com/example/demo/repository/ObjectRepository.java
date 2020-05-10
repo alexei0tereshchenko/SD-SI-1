@@ -17,4 +17,8 @@ public interface ObjectRepository extends CrudRepository<Object, Long> {
     @Query(value = "select count(*) from object where (parent_id = :parentId and object_type_id = :objectTypeId)", nativeQuery = true)
     int countObjectsByParent(@org.springframework.data.repository.query.Param("parentId") Long parentId,
                              @org.springframework.data.repository.query.Param("objectTypeId") Long objectTypeId);
+
+    @Query(value = "select * from object where (parent_id = :parentId and object_type_id = :objectTypeId)", nativeQuery = true)
+    Iterable<Object> selectObjectsForParent(@org.springframework.data.repository.query.Param("parentId") Long parentId,
+                                            @org.springframework.data.repository.query.Param("objectTypeId") Long objectTypeId);
 }
