@@ -5,7 +5,7 @@ import com.example.demo.eav.model.object.Object;
 import com.example.demo.model.Base;
 import org.springframework.stereotype.Component;
 
-@Component
+@Component("customer")
 public class CustomerConverter extends EavBaseConverter {
 
     @Override
