@@ -9,7 +9,5 @@ import java.math.BigDecimal;
 public class CreateOtsDto {
     private Long parentId;
     private BigDecimal amount;
-    private OtsStatus otsStatus;
-    private String terminationReason;
-    private boolean instalments;
+    private Boolean instalments;
 }
