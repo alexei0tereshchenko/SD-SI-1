@@ -13,6 +13,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -32,9 +33,22 @@ public class PaymentIntegrationService {
 
     @Transactional
     public void createPayment(Payment source) throws PaymentIntegrationException {
-        if (objectRepository.countObjectsByParent(source.getParentId(), source.getObjectTypeId()) >= Payment.PAYMENTS_LIMIT_FOR_BILL_ACCOUNT) {
+        // we can't add payment if there isn't any bills
+        if(objectRepository.countObjectsByParent(source.getParentId(), 7L) == 0){
+            throw new PaymentIntegrationException("Can't create payment connected for billing account with ID:" + source.getParentId()
+                    + ", because there isn't any bills connected to this account");
+        }
+        // we can't add non-negative payment if limit has already been reached
+        else if ((source.getAmount().compareTo(BigDecimal.ZERO) > 0) && objectRepository.countObjectsWithNonNegativeAmountByParent(source.getParentId(), source.getObjectTypeId()) >= Payment.PAYMENTS_LIMIT_FOR_BILL_ACCOUNT) {
             throw new PaymentIntegrationException("Can't create payment connected for billing account with ID:" + source.getParentId()
                     + ", because limit of payments for this billing account has already been reached");
+        }
+        // we can't add non-negative payment if all bills have already been paid
+        else if((source.getAmount().compareTo(BigDecimal.ZERO) > 0) &&
+                objectRepository.totalAmountByParent(source.getParentId(), 7L).compareTo(
+                        objectRepository.totalAmountByParent(source.getParentId(), 4L)) <= 0){
+            throw new PaymentIntegrationException("Can't create payment connected for billing account with ID:" + source.getParentId()
+                    + ", because all bills have already been paid");
         }
         else{
             Object paymentDataObject = objectRepository.save(paymentConverter.convertToEav(source));

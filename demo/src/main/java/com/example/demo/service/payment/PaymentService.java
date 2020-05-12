@@ -19,7 +19,7 @@ public class PaymentService {
     private PaymentIntegrationService paymentIntegrationServiceInt;
 
     public Payment createPayment(CreatePaymentDto source) throws PaymentServiceException{
-        try{
+        try {
             Payment payment = new Payment();
 
             //default parameters
@@ -36,8 +36,13 @@ public class PaymentService {
             payment.setPaymentMethod(source.getPaymentMethod());
             payment.setName("payment-" + source.getAmount().toString() + "-" + (new SimpleDateFormat("yyyyMMddHHmmss").format(payment.getCreatedWhen())));
 
-            paymentIntegrationServiceInt.createPayment(payment);
-            return payment;
+            try {
+                paymentIntegrationServiceInt.createPayment(payment);
+                return payment;
+            } catch (PaymentIntegrationService.PaymentIntegrationException e){
+                throw new PaymentServiceException(e);
+            }
+
         }
         catch (Exception e){
             throw new PaymentServiceException(e);

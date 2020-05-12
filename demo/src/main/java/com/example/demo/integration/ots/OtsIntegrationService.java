@@ -1,14 +1,13 @@
 package com.example.demo.integration.ots;
 
+import com.example.demo.controller.PaymentController;
 import com.example.demo.dto.ots.UpdateOtsDto;
-import com.example.demo.dto.payment.UpdatePaymentDto;
+import com.example.demo.dto.payment.CreatePaymentDto;
 import com.example.demo.eav.converter.EavBaseConverter;
 import com.example.demo.eav.model.object.Param;
-import com.example.demo.integration.payment.PaymentIntegrationService;
 import com.example.demo.model.ots.Ots;
 import com.example.demo.eav.model.object.Object;
-import com.example.demo.model.payment.Payment;
-import com.example.demo.repository.AttributeRepository;
+import com.example.demo.model.payment.PaymentMethod;
 import com.example.demo.repository.ObjectRepository;
 import com.example.demo.repository.ParamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +16,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -33,6 +33,9 @@ public class OtsIntegrationService {
     @Autowired
     @Qualifier("ots")
     private EavBaseConverter otsConverter;
+
+    @Autowired
+    private PaymentController paymentController;
 
     @Transactional
     public void createOts(Ots source) throws OtsIntegrationException {
@@ -78,6 +81,22 @@ public class OtsIntegrationService {
     @Transactional
     public void deleteOts(Long objectId) throws OtsIntegrationException {
         try{
+            try{
+                Object otsObject = objectRepository.findById(objectId).get();
+                List<Param> params = otsObject.getParams();
+
+                CreatePaymentDto dto = new CreatePaymentDto();
+                BigDecimal amount = new BigDecimal(findParamByAttributeId(params, 3L).getValue());
+                dto.setAmount(amount.negate());
+                dto.setCreatedBy("OTS_TERMINATION");
+                dto.setParentId(otsObject.getParentObject().getObjectId());
+                dto.setPaymentMethod(PaymentMethod.BANK_CARD);
+
+                paymentController.createPayment(dto);
+            }
+            catch (PaymentController.PaymentControllerException e){
+                throw new OtsIntegrationException("Can't delete ots with ID:" + objectId + " because " + e.getMessage(), e);
+            }
             paramRepository.deleteParamsForObject(objectId);
             objectRepository.deleteObject(objectId);
         }
