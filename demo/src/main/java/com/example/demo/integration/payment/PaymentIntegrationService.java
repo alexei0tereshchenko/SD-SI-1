@@ -13,6 +13,8 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -31,9 +33,22 @@ public class PaymentIntegrationService {
 
     @Transactional
     public void createPayment(Payment source) throws PaymentIntegrationException {
-        if (objectRepository.countObjectsByParent(source.getParentId(), source.getObjectTypeId()) >= Payment.PAYMENTS_LIMIT_FOR_BILL_ACCOUNT) {
+        // we can't add payment if there isn't any bills
+        if(objectRepository.countObjectsByParent(source.getParentId(), 7L) == 0){
+            throw new PaymentIntegrationException("Can't create payment connected for billing account with ID:" + source.getParentId()
+                    + ", because there isn't any bills connected to this account");
+        }
+        // we can't add non-negative payment if limit has already been reached
+        else if ((source.getAmount().compareTo(BigDecimal.ZERO) > 0) && objectRepository.countObjectsWithNonNegativeAmountByParent(source.getParentId(), source.getObjectTypeId()) >= Payment.PAYMENTS_LIMIT_FOR_BILL_ACCOUNT) {
             throw new PaymentIntegrationException("Can't create payment connected for billing account with ID:" + source.getParentId()
                     + ", because limit of payments for this billing account has already been reached");
+        }
+        // we can't add non-negative payment if all bills have already been paid
+        else if((source.getAmount().compareTo(BigDecimal.ZERO) > 0) &&
+                objectRepository.totalAmountByParent(source.getParentId(), 7L).compareTo(
+                        objectRepository.totalAmountByParent(source.getParentId(), 4L)) <= 0){
+            throw new PaymentIntegrationException("Can't create payment connected for billing account with ID:" + source.getParentId()
+                    + ", because all bills have already been paid");
         }
         else{
             Object paymentDataObject = objectRepository.save(paymentConverter.convertToEav(source));
@@ -55,6 +70,21 @@ public class PaymentIntegrationService {
         }
     }
 
+    public List<Payment> getBillingAccountPayments(Long accountId) throws PaymentIntegrationException {
+        List<Payment> payments = new ArrayList<>();
+        try{
+            List<Object> results = new ArrayList<>();
+            objectRepository.selectObjectsForParent(accountId, 4L).forEach(results::add);
+            for (Object paymentObject:results) {
+                payments.add((Payment)paymentConverter.convertFromEav(paymentObject));
+            }
+            return payments;
+        }
+        catch(NoSuchElementException e){
+            throw new PaymentIntegrationException("Can't find payments for account with ID:" + accountId, e);
+        }
+    }
+
     @Transactional
     public void deletePayment(Long objectId) throws PaymentIntegrationException {
         try{
@@ -67,7 +97,7 @@ public class PaymentIntegrationService {
     }
 
     @Transactional
-    public void updatePayment(UpdatePaymentDto source, Long objectId) throws PaymentIntegrationException {
+    public Payment updatePayment(UpdatePaymentDto source, Long objectId) throws PaymentIntegrationException {
         try{
             Object paymentObject = objectRepository.findById(objectId).get();
             List<Param> params = paymentObject.getParams();
@@ -86,7 +116,9 @@ public class PaymentIntegrationService {
             findParamByAttributeId(params, 16L).setValue(source.getPaymentMethod().toString());
             findParamByAttributeId(params, 17L).setValue(source.getCreatedBy().toString());
             findParamByAttributeId(params, 18L).setValue(paymentConverter.getDateFormatter().format(source.getCancellationDate()));
+            Payment p = (Payment)paymentConverter.convertFromEav(paymentObject);
             objectRepository.save(paymentObject);
+            return p;
         }
         catch (NoSuchElementException e){
             throw new PaymentIntegrationException("Can't update payment because object with ID:" + objectId + " wasn't found", e);
@@ -94,7 +126,7 @@ public class PaymentIntegrationService {
     }
 
     @Transactional
-    public void cancelPayment(Long objectId) throws PaymentIntegrationException {
+    public Payment cancelPayment(Long objectId) throws PaymentIntegrationException {
         try{
             Object paymentObject = objectRepository.findById(objectId).get();
             List<Param> params = paymentObject.getParams();
@@ -105,7 +137,9 @@ public class PaymentIntegrationService {
 
             findParamByAttributeId(params, 6L).setValue("CANCELLED");
             findParamByAttributeId(params, 18L).setValue(paymentConverter.getDateFormatter().format(new Date()));
+            Payment p = (Payment)paymentConverter.convertFromEav(paymentObject);
             objectRepository.save(paymentObject);
+            return p;
         }
         catch (NoSuchElementException e){
             throw new PaymentIntegrationException("Can't update payment because object with ID:" + objectId + " wasn't found", e);

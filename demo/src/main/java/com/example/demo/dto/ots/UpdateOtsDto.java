@@ -14,5 +14,6 @@ public class UpdateOtsDto {
     private Long parentId;
     private OtsStatus otsStatus;
     private String terminationReason;
-    private boolean instalments;
+    private Boolean instalments;
+    private Date cancellationDate;
 }
