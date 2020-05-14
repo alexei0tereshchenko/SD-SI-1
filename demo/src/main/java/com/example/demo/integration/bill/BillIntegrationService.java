@@ -8,6 +8,7 @@ import com.example.demo.repository.AttributeRepository;
 import com.example.demo.repository.ObjectRepository;
 import com.example.demo.repository.ParamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +24,7 @@ public class BillIntegrationService {
     private AttributeRepository attributeRepository;
 
     @Autowired
+    @Qualifier("customer")
     private EavBaseConverter eavBaseConverter;
 
     @Transactional
