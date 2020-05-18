@@ -15,5 +15,5 @@ public class UpdateBillDto {
     private Long parentId;
     private BillStatus billStatus;
     private BillStyle billStyle;
-    private long billNumber;
+    private Long billNumber;
 }

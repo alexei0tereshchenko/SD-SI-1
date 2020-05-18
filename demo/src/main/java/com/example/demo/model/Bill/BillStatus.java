@@ -1,5 +1,5 @@
 package com.example.demo.model.Bill;
 
 public enum  BillStatus {
-    CREATED, CANCELED, PENDING, CANCELLETION
+    CREATED, CANCELED, PENDINGCAN_CELLETION
 }

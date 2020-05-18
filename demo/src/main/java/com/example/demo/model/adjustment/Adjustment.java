@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 import java.util.Date;
 
 @Data
-@EqualsAndHashCode()
+@EqualsAndHashCode(callSuper = false)
 @ObjectType(objectTypeId = "4")
 public class Adjustment extends Base {
     @Attribute(attrId = "14")

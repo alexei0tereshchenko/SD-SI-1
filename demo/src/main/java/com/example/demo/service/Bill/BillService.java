@@ -7,46 +7,73 @@ import com.example.demo.model.Bill.Bill;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class BillService {
 
     @Autowired
-    private BillIntegrationService billIntegrationService;
+    BillIntegrationService billIntegrationService;
 
-    public Bill createBill(CreateBillDto source) throws Exception{
-        Bill bill = new Bill();
-            bill.setBillStatus(source.billStatus);
-            bill.setBillStyle(source.billStyle);
-            bill.setBillNumber(source.billNumber);
+    public Bill createBill(CreateBillDto source) throws BillServiceException {
+        try {
+            Bill bill = new Bill();
+
+            bill.setObjectTypeId(7L);
+            bill.setBillStatus(source.getBillStatus());
+            bill.setBillStyle(source.getBillStyle());
+            bill.setBillNumber(source.getBillNumber());
+
             billIntegrationService.createBill(bill);
             return bill;
-    }
-    public void updateBill(UpdateBillDto source, Long id) throws Exception {
-        try {
-            billIntegrationService.updateBill(id, source);
         } catch (Exception e) {
-            throw new Exception(e);
+            throw new BillServiceException(e);
         }
     }
-    public Bill getBill(Long id) throws Exception {
+
+    public Bill getBill(Long id) throws BillServiceException {
         try {
             return billIntegrationService.getBill(id);
         } catch (Exception e) {
-            throw new Exception(e);
+            throw new BillServiceException(e);
         }
     }
-    public void deleteBill(Long id) throws Exception {
+
+    public List<Bill> getBillingAccountBill(Long accountId) throws BillServiceException {
+        try {
+            return billIntegrationService.getBillingAccountBill(accountId);
+        } catch (Exception e) {
+            throw new BillServiceException(e);
+        }
+    }
+
+    public Bill updateBill(UpdateBillDto source, Long id) throws BillServiceException {
+        try {
+            return billIntegrationService.updateBill(source, id);
+        } catch (Exception e) {
+            throw new BillServiceException(e);
+        }
+    }
+
+    public void deleteBill(Long id) throws BillServiceException {
         try {
             billIntegrationService.deleteBill(id);
         } catch (Exception e) {
-            throw new Exception(e);
+            throw new BillServiceException(e);
         }
     }
-    public void cancelBill(Long id) throws Exception {
+
+    public Bill cancelBill(Long id) throws BillServiceException {
         try {
-            billIntegrationService.cancelBill(id);
+            return billIntegrationService.cancelBill(id);
         } catch (Exception e) {
-            throw new Exception(e);
+            throw new BillServiceException(e);
+        }
+    }
+
+    public static class BillServiceException extends Exception {
+        public BillServiceException(Exception cause) {
+            super(cause.getMessage(), cause);
         }
     }
 }
