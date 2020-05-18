@@ -29,7 +29,7 @@ public class Ots extends Base {
     private String terminationReason;
 
     @Attribute(attrId = "23")
-    private boolean instalments;
+    private Boolean instalments;
 
     @Attribute(attrId = "18")
     private Date cancellationDate;
