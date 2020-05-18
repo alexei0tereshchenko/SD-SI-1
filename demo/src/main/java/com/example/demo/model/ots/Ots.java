@@ -13,8 +13,6 @@ import java.util.Date;
 @Data
 @ObjectType(objectTypeId = "5")
 public class Ots extends Base {
-    static public final int OTS_LIMIT_FOR_BILL_ACCOUNT = 5;
-
     @Attribute(attrId = "14")
     private String description;
 

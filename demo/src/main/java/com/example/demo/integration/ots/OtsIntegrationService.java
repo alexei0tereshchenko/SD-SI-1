@@ -37,9 +37,11 @@ public class OtsIntegrationService {
     @Autowired
     private PaymentController paymentController;
 
+    static private final int OTS_LIMIT_FOR_BILL_ACCOUNT = 5;
+
     @Transactional
     public void createOts(Ots source) throws OtsIntegrationException {
-        if (objectRepository.countObjectsByParent(source.getParentId(), source.getObjectTypeId()) >= Ots.OTS_LIMIT_FOR_BILL_ACCOUNT) {
+        if (objectRepository.countObjectsByParent(source.getParentId(), source.getObjectTypeId()) >= OTS_LIMIT_FOR_BILL_ACCOUNT) {
             throw new OtsIntegrationException("Can't create ots connected for billing account with ID:" + source.getParentId()
                     + ", because limit of ots for this billing account has already been reached");
         }

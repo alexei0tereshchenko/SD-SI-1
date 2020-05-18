@@ -31,6 +31,8 @@ public class PaymentIntegrationService {
     @Qualifier("payment")
     private PaymentConverter paymentConverter;
 
+    static private final int PAYMENTS_LIMIT_FOR_BILL_ACCOUNT = 5;
+
     @Transactional
     public void createPayment(Payment source) throws PaymentIntegrationException {
         // we can't add payment if there isn't any bills
@@ -39,7 +41,8 @@ public class PaymentIntegrationService {
                     + ", because there isn't any bills connected to this account");
         }
         // we can't add non-negative payment if limit has already been reached
-        else if ((source.getAmount().compareTo(BigDecimal.ZERO) > 0) && objectRepository.countObjectsWithNonNegativeAmountByParent(source.getParentId(), source.getObjectTypeId()) >= Payment.PAYMENTS_LIMIT_FOR_BILL_ACCOUNT) {
+        else if ((source.getAmount().compareTo(BigDecimal.ZERO) > 0)
+                && objectRepository.countObjectsWithNonNegativeAmountByParent(source.getParentId(), source.getObjectTypeId()) >= PAYMENTS_LIMIT_FOR_BILL_ACCOUNT) {
             throw new PaymentIntegrationException("Can't create payment connected for billing account with ID:" + source.getParentId()
                     + ", because limit of payments for this billing account has already been reached");
         }
