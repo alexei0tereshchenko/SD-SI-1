@@ -25,18 +25,34 @@ import {MatOptionModule} from "@angular/material/core";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {PaymentCreateComponent} from "./payment-create/payment-create.component";
 import {DateFormatterService} from "./app-services/date-formatter.service";
+import {BillingAccountTableComponent} from "./billing-acc-table/billing-acc-table.component";
+import {BillingAccountService} from "./app-services/billing-account.service";
+import {OtsService} from "./app-services/ots.service";
+import {OtsUpdateComponent} from "./ots-update/ots-update.component";
+import {OtsCreateComponent} from "./ots-create/ots-create.component";
+import {OtsTableComponent} from "./ots-table/ots-table.component";
+import {YesNoPipe} from "./pipes/yes-no.pipe";
+import {MatRadioModule} from "@angular/material/radio";
+import {MatSnackBarModule} from "@angular/material/snack-bar";
 
 @NgModule({
   declarations: [
     AppComponent,
     CustomerTableComponent,
     PaymentTableComponent,
+    OtsTableComponent,
+    BillingAccountTableComponent,
     PaymentUpdateComponent,
     PaymentCreateComponent,
+    OtsUpdateComponent,
+    OtsCreateComponent,
+    YesNoPipe,
   ],
   entryComponents: [
     PaymentUpdateComponent,
     PaymentCreateComponent,
+    OtsUpdateComponent,
+    OtsCreateComponent,
   ],
   imports: [
     BrowserModule,
@@ -53,16 +69,20 @@ import {DateFormatterService} from "./app-services/date-formatter.service";
     MatOptionModule,
     MatInputModule,
     MatButtonModule,
+    MatSnackBarModule,
     MatTooltipModule,
     MatDialogModule,
     MatFormFieldModule,
     HttpClientModule,
     RouterModule.forRoot([
-      {path: '', component: PaymentTableComponent},
+      {path: '', component: BillingAccountTableComponent},
+      {path: 'payments/:accountId', component: PaymentTableComponent},
+      {path: 'ots/:accountId', component: OtsTableComponent},
     ]),
-    FormsModule
+    FormsModule,
+    MatRadioModule
   ],
-  providers: [PaymentService, DateFormatterService],
+  providers: [PaymentService, OtsService, BillingAccountService, DateFormatterService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
