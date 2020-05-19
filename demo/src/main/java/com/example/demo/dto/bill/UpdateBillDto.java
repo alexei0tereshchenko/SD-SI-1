@@ -5,14 +5,11 @@ import com.example.demo.model.Bill.BillStyle;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 @Data
 public class UpdateBillDto {
-    private String description;
-    private Date createdWhen;
-    private BigDecimal amount;
     private Long parentId;
+    private BigDecimal amount;
     private BillStatus billStatus;
     private BillStyle billStyle;
     private Long billNumber;

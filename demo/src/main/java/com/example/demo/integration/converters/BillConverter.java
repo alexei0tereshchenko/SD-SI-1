@@ -48,6 +48,8 @@ public class BillConverter extends EavBaseConverter {
                             declaredField.set(bill, BillStatus.valueOf(value));
                         } else if (declaredField.getType() == BillStyle.class) {
                             declaredField.set(bill, BillStyle.valueOf(value));
+                        } else if (declaredField.getType() == Long.class){
+                            declaredField.set(bill, Long.valueOf(value));
                         }
                     } catch (IllegalAccessException | ParseException e) {
                         throw new RuntimeException(e);

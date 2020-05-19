@@ -20,6 +20,8 @@ public class BillService {
             Bill bill = new Bill();
 
             bill.setObjectTypeId(7L);
+            bill.setParentId(source.getParentId());
+            bill.setAmount(source.getAmount());
             bill.setBillStatus(source.getBillStatus());
             bill.setBillStyle(source.getBillStyle());
             bill.setBillNumber(source.getBillNumber());

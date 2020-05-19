@@ -18,59 +18,59 @@ public class BillController {
     @Autowired
     private BillService billService;
 
-    @PostMapping
+    @PostMapping(value = "/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public Bill createBill(@RequestBody CreateBillDto source) throws BillControllerException {
+    public Bill createBill(@RequestBody CreateBillDto source) throws BillController.BillControllerException {
         try {
             return billService.createBill(source);
         } catch (BillService.BillServiceException e) {
-            throw new BillControllerException(e);
+            throw new BillController.BillControllerException(e);
         }
     }
 
     @PutMapping(value = "/{id}")
-    public Bill putBill(@RequestBody UpdateBillDto source, @PathVariable Long id) throws BillControllerException {
+    public Bill putBill(@RequestBody UpdateBillDto source, @PathVariable Long id) throws BillController.BillControllerException {
         try {
             return billService.updateBill(source, id);
         } catch (BillService.BillServiceException e) {
-            throw new BillControllerException(e);
+            throw new BillController.BillControllerException(e);
         }
     }
 
     @PutMapping(value = "/cancel/{id}")
-    public Bill cancelBill(@PathVariable Long id) throws BillControllerException {
+    public Bill cancelBill(@PathVariable Long id) throws BillController.BillControllerException {
         try {
             return billService.cancelBill(id);
         } catch (BillService.BillServiceException e) {
-            throw new BillControllerException(e);
+            throw new BillController.BillControllerException(e);
         }
     }
 
     @GetMapping(value = "/{id}")
-    public Bill getBill(@PathVariable Long id) throws BillControllerException {
+    public Bill getBill(@PathVariable Long id) throws BillController.BillControllerException {
         try {
             return billService.getBill(id);
         } catch (BillService.BillServiceException e) {
-            throw new BillControllerException(e);
+            throw new BillController.BillControllerException(e);
         }
     }
 
     @GetMapping(value = "account/{accoundId}")
-    public List<Bill> getBillingAccountBill(@PathVariable Long accountId) throws BillControllerException {
+    public List<Bill> getBillingAccountBill(@PathVariable Long accountId) throws BillController.BillControllerException {
         try {
             return billService.getBillingAccountBill(accountId);
         } catch (BillService.BillServiceException e) {
-            throw new BillControllerException(e);
+            throw new BillController.BillControllerException(e);
         }
     }
 
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteBill(@PathVariable Long id) throws BillControllerException {
+    public void deleteBill(@PathVariable Long id) throws BillController.BillControllerException {
         try {
             billService.deleteBill(id);
         } catch (BillService.BillServiceException e) {
-            throw new BillControllerException(e);
+            throw new BillController.BillControllerException(e);
         }
     }
 
