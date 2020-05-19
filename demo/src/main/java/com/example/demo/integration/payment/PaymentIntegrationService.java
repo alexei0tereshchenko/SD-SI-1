@@ -1,8 +1,10 @@
 package com.example.demo.integration.payment;
 
 import com.example.demo.dto.payment.UpdatePaymentDto;
+import com.example.demo.eav.converter.EavBaseConverter;
 import com.example.demo.eav.model.object.Object;
 import com.example.demo.eav.model.object.Param;
+import com.example.demo.integration.ExceptionMessageGenerator;
 import com.example.demo.integration.converters.PaymentConverter;
 import com.example.demo.model.payment.Payment;
 import com.example.demo.repository.ObjectRepository;
@@ -29,11 +31,10 @@ public class PaymentIntegrationService {
 
     @Autowired
     @Qualifier("payment")
-    private PaymentConverter paymentConverter;
+    private EavBaseConverter paymentConverter;
 
     @Autowired
-    @Qualifier("payment")
-    private PaymentMessageGenerator messageGenerator;
+    private PaymentMessageGenerator messageGenerator = new PaymentMessageGenerator();
 
     static private final int PAYMENTS_LIMIT_FOR_BILL_ACCOUNT = 5;
 
@@ -110,7 +111,6 @@ public class PaymentIntegrationService {
                 throw new PaymentIntegrationException(messageGenerator.generateAlreadyCancelled());
             }
 
-            paymentObject.setName(source.getName());
             paymentObject.setParentObject(objectRepository.findById(source.getParentId()).get());
 
             findParamByAttributeId(params, 14L).setValue(source.getDescription());
