@@ -1,5 +1,4 @@
 export class PaymentUpdateDto {
-  name: string;
   parentId: number;
   description: string;
   createdWhen: string;
