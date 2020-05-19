@@ -35,6 +35,10 @@ public class OtsIntegrationService {
     private EavBaseConverter otsConverter;
 
     @Autowired
+    @Qualifier("ots")
+    private OtsMessageGenerator messageGenerator;
+
+    @Autowired
     private PaymentController paymentController;
 
     static private final int OTS_LIMIT_FOR_BILL_ACCOUNT = 5;
@@ -42,8 +46,7 @@ public class OtsIntegrationService {
     @Transactional
     public void createOts(Ots source) throws OtsIntegrationException {
         if (objectRepository.countObjectsByParent(source.getParentId(), source.getObjectTypeId()) >= OTS_LIMIT_FOR_BILL_ACCOUNT) {
-            throw new OtsIntegrationException("Can't create ots connected for billing account with ID:" + source.getParentId()
-                    + ", because limit of ots for this billing account has already been reached");
+            throw new OtsIntegrationException(messageGenerator.generateCreateLimitReached(source.getParentId()));
         }
         else{
             Object otsDataObject = objectRepository.save(otsConverter.convertToEav(source));
@@ -61,7 +64,7 @@ public class OtsIntegrationService {
             return (Ots)otsConverter.convertFromEav(otsObject);
         }
         catch(NoSuchElementException e){
-            throw new OtsIntegrationException("Can't find ots with ID:" + objectId, e);
+            throw new OtsIntegrationException(messageGenerator.generateObjectNotFound(objectId), e);
         }
     }
 
@@ -76,7 +79,7 @@ public class OtsIntegrationService {
             return ots;
         }
         catch(NoSuchElementException e){
-            throw new OtsIntegrationException("Can't find ots for account with ID:" + accountId, e);
+            throw new OtsIntegrationException(messageGenerator.generateAccountNotFound(accountId), e);
         }
     }
 
@@ -97,13 +100,13 @@ public class OtsIntegrationService {
                 paymentController.createPayment(dto);
             }
             catch (PaymentController.PaymentControllerException e){
-                throw new OtsIntegrationException("Can't delete ots with ID:" + objectId + " because " + e.getMessage(), e);
+                throw new OtsIntegrationException(messageGenerator.generatePaymentIntegrationException(e, objectId), e);
             }
             paramRepository.deleteParamsForObject(objectId);
             objectRepository.deleteObject(objectId);
         }
         catch (DataAccessException e){
-            throw new OtsIntegrationException("Can't delete ots with ID:" + objectId + " because of DataAccessException", e);
+            throw new OtsIntegrationException(messageGenerator.generateDeleteDataAccessException(objectId), e);
         }
     }
 
@@ -114,7 +117,7 @@ public class OtsIntegrationService {
             List<Param> params = otsObject.getParams();
             String otsStatus = findParamByAttributeId(params, 21L).getValue();
             if(otsStatus.equals("TERMINATED")){
-                throw new OtsIntegrationException("Can't update ots because it's already terminated");
+                throw new OtsIntegrationException(messageGenerator.generateAlreadyTerminated());
             }
 
             findParamByAttributeId(params, 14L).setValue(source.getDescription());
@@ -129,7 +132,7 @@ public class OtsIntegrationService {
             return ots;
         }
         catch (NoSuchElementException e){
-            throw new OtsIntegrationException("Can't update ots because object with ID:" + objectId + " wasn't found", e);
+            throw new OtsIntegrationException(messageGenerator.generateObjectNotFound(objectId), e);
         }
     }
 
@@ -140,7 +143,7 @@ public class OtsIntegrationService {
             List<Param> params = otsObject.getParams();
             String otsStatus = findParamByAttributeId(params, 21L).getValue();
             if(otsStatus.equals("TERMINATED")){
-                throw new OtsIntegrationException("Can't terminate ots because it's already terminated");
+                throw new OtsIntegrationException(messageGenerator.generateAlreadyTerminated());
             }
 
             findParamByAttributeId(params, 21L).setValue("TERMINATED");
@@ -150,7 +153,7 @@ public class OtsIntegrationService {
             return ots;
         }
         catch (NoSuchElementException e){
-            throw new OtsIntegrationException("Can't update ots because object with ID:" + objectId + " wasn't found", e);
+            throw new OtsIntegrationException(messageGenerator.generateObjectNotFound(objectId), e);
         }
     }
 
