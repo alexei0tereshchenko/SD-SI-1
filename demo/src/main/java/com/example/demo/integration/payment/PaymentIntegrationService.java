@@ -31,24 +31,28 @@ public class PaymentIntegrationService {
     @Qualifier("payment")
     private PaymentConverter paymentConverter;
 
+    @Autowired
+    @Qualifier("payment")
+    private PaymentMessageGenerator messageGenerator;
+
+    static private final int PAYMENTS_LIMIT_FOR_BILL_ACCOUNT = 5;
+
     @Transactional
     public void createPayment(Payment source) throws PaymentIntegrationException {
         // we can't add payment if there isn't any bills
         if(objectRepository.countObjectsByParent(source.getParentId(), 7L) == 0){
-            throw new PaymentIntegrationException("Can't create payment connected for billing account with ID:" + source.getParentId()
-                    + ", because there isn't any bills connected to this account");
+            throw new PaymentIntegrationException(messageGenerator.generateNoBills(source.getParentId()));
         }
         // we can't add non-negative payment if limit has already been reached
-        else if ((source.getAmount().compareTo(BigDecimal.ZERO) > 0) && objectRepository.countObjectsWithNonNegativeAmountByParent(source.getParentId(), source.getObjectTypeId()) >= Payment.PAYMENTS_LIMIT_FOR_BILL_ACCOUNT) {
-            throw new PaymentIntegrationException("Can't create payment connected for billing account with ID:" + source.getParentId()
-                    + ", because limit of payments for this billing account has already been reached");
+        else if ((source.getAmount().compareTo(BigDecimal.ZERO) > 0)
+                && objectRepository.countObjectsWithNonNegativeAmountByParent(source.getParentId(), source.getObjectTypeId()) >= PAYMENTS_LIMIT_FOR_BILL_ACCOUNT) {
+            throw new PaymentIntegrationException(messageGenerator.generateCreateLimitReached(source.getParentId()));
         }
         // we can't add non-negative payment if all bills have already been paid
         else if((source.getAmount().compareTo(BigDecimal.ZERO) > 0) &&
                 objectRepository.totalAmountByParent(source.getParentId(), 7L).compareTo(
                         objectRepository.totalAmountByParent(source.getParentId(), 4L)) <= 0){
-            throw new PaymentIntegrationException("Can't create payment connected for billing account with ID:" + source.getParentId()
-                    + ", because all bills have already been paid");
+            throw new PaymentIntegrationException(messageGenerator.generateBillsAlreadyPaid(source.getParentId()));
         }
         else{
             Object paymentDataObject = objectRepository.save(paymentConverter.convertToEav(source));
@@ -66,7 +70,7 @@ public class PaymentIntegrationService {
             return (Payment)paymentConverter.convertFromEav(paymentObject);
         }
         catch(NoSuchElementException e){
-            throw new PaymentIntegrationException("Can't find payment with ID:" + objectId, e);
+            throw new PaymentIntegrationException(messageGenerator.generateObjectNotFound(objectId), e);
         }
     }
 
@@ -81,7 +85,7 @@ public class PaymentIntegrationService {
             return payments;
         }
         catch(NoSuchElementException e){
-            throw new PaymentIntegrationException("Can't find payments for account with ID:" + accountId, e);
+            throw new PaymentIntegrationException(messageGenerator.generateAccountNotFound(accountId), e);
         }
     }
 
@@ -92,7 +96,7 @@ public class PaymentIntegrationService {
             objectRepository.deleteObject(objectId);
         }
         catch (DataAccessException e){
-            throw new PaymentIntegrationException("Can't delete payment with ID:" + objectId + " because of DataAccessException", e);
+            throw new PaymentIntegrationException(messageGenerator.generateDeleteDataAccessException(objectId), e);
         }
     }
 
@@ -103,7 +107,7 @@ public class PaymentIntegrationService {
             List<Param> params = paymentObject.getParams();
             String paymentStatus = findParamByAttributeId(params, 6L).getValue();
             if(paymentStatus.equals("CANCELLED")){
-                throw new PaymentIntegrationException("Can't update payment because it's already cancelled");
+                throw new PaymentIntegrationException(messageGenerator.generateAlreadyCancelled());
             }
 
             paymentObject.setName(source.getName());
@@ -121,7 +125,7 @@ public class PaymentIntegrationService {
             return p;
         }
         catch (NoSuchElementException e){
-            throw new PaymentIntegrationException("Can't update payment because object with ID:" + objectId + " wasn't found", e);
+            throw new PaymentIntegrationException(messageGenerator.generateObjectNotFound(objectId), e);
         }
     }
 
@@ -132,7 +136,7 @@ public class PaymentIntegrationService {
             List<Param> params = paymentObject.getParams();
             String paymentStatus = findParamByAttributeId(params, 6L).getValue();
             if(paymentStatus.equals("CANCELLED")){
-                throw new PaymentIntegrationException("Can't cancel payment because it's already cancelled");
+                throw new PaymentIntegrationException(messageGenerator.generateAlreadyCancelled());
             }
 
             findParamByAttributeId(params, 6L).setValue("CANCELLED");
@@ -142,7 +146,7 @@ public class PaymentIntegrationService {
             return p;
         }
         catch (NoSuchElementException e){
-            throw new PaymentIntegrationException("Can't update payment because object with ID:" + objectId + " wasn't found", e);
+            throw new PaymentIntegrationException(messageGenerator.generateObjectNotFound(objectId), e);
         }
     }
 

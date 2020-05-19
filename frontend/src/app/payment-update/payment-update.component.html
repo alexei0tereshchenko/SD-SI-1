@@ -58,7 +58,7 @@
 
     <div mat-dialog-actions>
       <button mat-button [type]="submit" [disabled]="!updateForm.valid" [mat-dialog-close]="1" (click)="submit()">Save</button>
-      <button mat-button (click)="cancel()" tabindex="-1">Cancel</button>
+      <button mat-button (click)="cancel()" mat-dialog-close="cancelled" tabindex="-1">Cancel</button>
     </div>
   </form>
 </div>

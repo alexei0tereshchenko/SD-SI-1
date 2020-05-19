@@ -17,10 +17,6 @@ export class PaymentService {
     "createdBy": null,
   };
 
-  getAccountPayments(accountId){
-    return this.http.get('http://localhost:8080/payment/49');
-  }
-
   getPayment(paymentId):Observable<Payment>{
     return this.http.get<Payment>('http://localhost:8080/payment/' + paymentId.toString());
   }

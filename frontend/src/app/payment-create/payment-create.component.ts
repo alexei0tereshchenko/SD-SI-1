@@ -13,6 +13,7 @@ export class PaymentCreateComponent{
 
   constructor(public dialogRef: MatDialogRef<PaymentCreateComponent>,
               public paymentService: PaymentService) {
+    dialogRef.disableClose = true;
     this.data = JSON.parse(JSON.stringify(this.paymentService.createDto));
   }
 
@@ -21,6 +22,6 @@ export class PaymentCreateComponent{
   }
 
   cancel(): void {
-    this.dialogRef.close();
+    this.dialogRef.close("cancelled");
   }
 }

@@ -1,0 +1,56 @@
+<div class="container">
+  <h3 mat-dialog-title>Edit ots</h3>
+
+  <form class="mat-dialog-content" (ngSubmit)="submit" #updateForm="ngForm">
+
+    <div class="form">
+      <mat-form-field color="accent">
+        <input matInput class="form-control" placeholder="Description" [(ngModel)]="data.description"
+               name="description" required #description="ngModel">
+        <mat-error *ngIf="description.errors?.required">Field required</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="form">
+      <mat-form-field color="accent">
+        <input matInput class="form-control" placeholder="Amount" [(ngModel)]="data.amount"
+               name="amount" required [pattern]="'[1-9][0-9]*'" #amount="ngModel">
+        <mat-error *ngIf="amount.errors?.required">Field required</mat-error>
+        <mat-error *ngIf="amount.errors?.pattern">Amount should be a number</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="form">
+      <mat-form-field color="accent">
+        <mat-select [(value)]="data.otsStatus" placeholder="Status">
+          <mat-option value="CREATED">CREATED</mat-option>
+          <mat-option value="UNBILLED">UNBILLED</mat-option>
+          <mat-option value="BILLED">BILLED</mat-option>
+          <mat-option value="TERMINATED">TERMINATED</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="form">
+      <mat-form-field color="accent">
+        <mat-select [(value)]="instalments" placeholder="Instalments">
+          <mat-option value="NO">NO</mat-option>
+          <mat-option value="YES">YES</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="form">
+      <mat-form-field color="accent">
+        <input matInput class="form-control" placeholder="Termination reason" [(ngModel)]="data.terminationReason"
+               name="terminationReason" required #terminationReason="ngModel">
+        <mat-error *ngIf="terminationReason.errors?.required">Field required</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div mat-dialog-actions>
+      <button mat-button [type]="submit" [disabled]="!updateForm.valid" [mat-dialog-close]="1" (click)="submit()">Save</button>
+      <button mat-button (click)="cancel()" mat-dialog-close="cancelled" tabindex="-1">Cancel</button>
+    </div>
+  </form>
+</div>

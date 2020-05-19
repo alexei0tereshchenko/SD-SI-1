@@ -1,5 +1,5 @@
 <div class="container">
-  <h3 mat-dialog-title>Create payment</h3>
+  <h3 mat-dialog-title>Create ots</h3>
 
   <form class="mat-dialog-content" (ngSubmit)="submit" #createForm="ngForm">
 
@@ -14,19 +14,10 @@
 
     <div class="form">
       <mat-form-field color="accent">
-        <mat-select [(value)]="data.paymentMethod" placeholder="Payment method">
-          <mat-option value="CASH">CASH</mat-option>
-          <mat-option value="BANK_CARD">CARD</mat-option>
-          <mat-option value="POSTAL">POSTAL</mat-option>
+        <mat-select [(value)]="instalments" placeholder="Instalments">
+          <mat-option value="YES">YES</mat-option>
+          <mat-option value="NO">NO</mat-option>
         </mat-select>
-      </mat-form-field>
-    </div>
-
-    <div class="form">
-      <mat-form-field color="accent">
-        <input matInput class="form-control" placeholder="Created by" [(ngModel)]="data.createdBy"
-               name="createdBy" required #createdBy="ngModel">
-        <mat-error *ngIf="createdBy.errors?.required">Field required</mat-error>
       </mat-form-field>
     </div>
 

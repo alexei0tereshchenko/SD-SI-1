@@ -1,22 +1,22 @@
 import {Component, OnInit, ViewChild} from "@angular/core";
-import {PaymentService} from "../app-services/payment.service";
-import {Payment} from "../app-object-types/payment";
 import {MatSort} from "@angular/material/sort";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatDialog} from "@angular/material/dialog";
-import {PaymentUpdateComponent} from "../payment-update/payment-update.component";
-import {PaymentCreateComponent} from "../payment-create/payment-create.component";
 import {DateFormatterService} from "../app-services/date-formatter.service";
 import {ActivatedRoute} from "@angular/router";
+import {OtsService} from "../app-services/ots.service";
+import {Ots} from "../app-object-types/ots";
+import {OtsUpdateComponent} from "../ots-update/ots-update.component";
+import {OtsCreateComponent} from "../ots-create/ots-create.component";
 import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
-  selector: 'app-payment-table',
-  templateUrl: './payment-table.component.html',
-  styleUrls: ['./payment-table.component.css'],
+  selector: 'app-ots-table',
+  templateUrl: './ots-table.component.html',
+  styleUrls: ['./ots-table.component.css'],
 })
-export class PaymentTableComponent implements OnInit{
+export class OtsTableComponent implements OnInit{
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
@@ -25,24 +25,24 @@ export class PaymentTableComponent implements OnInit{
   ngOnInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-    this.getAllPayments(this.basicParentId); //REMEMBER TO CHANGE!
+    this.getAllOts(this.basicParentId);
   }
 
-  constructor(private paymentService: PaymentService,
+  constructor(private otsService: OtsService,
               private dateFormatter:DateFormatterService,
-              private snackBar: MatSnackBar,
               private activatedRoute: ActivatedRoute,
+              private snackBar: MatSnackBar,
               private dialog: MatDialog) {
     this.basicParentId = activatedRoute.snapshot.params["accountId"];
-    this.dataSource = new MatTableDataSource<Payment>();
+    this.dataSource = new MatTableDataSource<Ots>();
   }
 
-  private displayedColumns: string[] = ['name', 'createdWhen', 'amount', 'status', 'method', 'createdBy', 'cancellationDate', "actions"];
+  private displayedColumns: string[] = ['name', 'createdWhen', 'amount', 'instalments', 'status', 'terminationReason', 'cancellationDate', "actions"];
   dataLength = 0;
-  dataSource: MatTableDataSource<Payment>;
+  dataSource: MatTableDataSource<Ots>;
 
-  getPayment(paymentId){
-    this.paymentService.getPayment(paymentId).subscribe((data:Payment) => {
+  getOts(otsId){
+    this.otsService.getOts(otsId).subscribe((data:Ots) => {
       this.dataSource.data.push(data);
       this.dataLength = this.dataSource.data.length;
       this.dataSource._updateChangeSubscription();
@@ -50,8 +50,8 @@ export class PaymentTableComponent implements OnInit{
       error => {this.snackBar.open(error.error.message, "Ok", {duration: 8000});});
   }
 
-  getAllPayments(billingAccountId){
-    this.paymentService.getAllPayments(billingAccountId).subscribe((data:Payment[]) => {
+  getAllOts(billingAccountId){
+    this.otsService.getAllOts(billingAccountId).subscribe((data:Ots[]) => {
       this.dataSource.data = this.dataSource.data.concat(data);
       this.dataLength = this.dataSource.data.length;
       this.dataSource._updateChangeSubscription();
@@ -59,15 +59,15 @@ export class PaymentTableComponent implements OnInit{
       error => {this.snackBar.open(error.error.message, "Ok", {duration: 8000});});
   }
 
-  reloadPayments(billingAccountId){
+  reloadOts(billingAccountId){
     this.dataSource.data = [];
-    this.getAllPayments(billingAccountId);
+    this.getAllOts(billingAccountId);
   }
 
-  cancelPayment(paymentId){
-    this.paymentService.cancelPayment(paymentId).subscribe(response => {
+  cancelOts(otsId){
+    this.otsService.terminateOts(otsId).subscribe(response => {
       console.log(response);
-      let index = this.dataSource.data.findIndex((element:Payment) => (element.objectId == paymentId));
+      let index = this.dataSource.data.findIndex((element:Ots) => (element.objectId == otsId));
       this.dataSource.data[index] = response;
       this.dataLength = this.dataSource.data.length;
       this.dataSource._updateChangeSubscription();
@@ -75,24 +75,23 @@ export class PaymentTableComponent implements OnInit{
       error => {this.snackBar.open(error.error.message, "Ok", {duration: 8000});});
   }
 
-  deletePayment(paymentId){
-    this.paymentService.deletePayment(paymentId).subscribe(response => {
-      console.log(response);
-      this.dataSource.data = this.dataSource.data.filter((element:Payment) => (element.objectId != paymentId));
+  deleteOts(otsId){
+    this.otsService.deleteOts(otsId).subscribe(response => {
+      this.dataSource.data = this.dataSource.data.filter((element:Ots) => (element.objectId != otsId));
       this.dataLength = this.dataSource.data.length;
       this.dataSource._updateChangeSubscription();
     },
       error => {this.snackBar.open(error.error.message, "Ok", {duration: 8000});});
   }
 
-  updatePayment(paymentId){
-    this.paymentService.updatePayment(paymentId).subscribe(response => {
+  updateOts(otsId){
+    this.otsService.updateOts(otsId).subscribe(response => {
       if(response.parentId == this.basicParentId){
-        let index = this.dataSource.data.findIndex((element:Payment) => (element.objectId == paymentId));
+        let index = this.dataSource.data.findIndex((element:Ots) => (element.objectId == otsId));
         this.dataSource.data[index] = response;
       }
       else{
-        this.dataSource.data = this.dataSource.data.filter((element:Payment) => (element.objectId != paymentId));
+        this.dataSource.data = this.dataSource.data.filter((element:Ots) => (element.objectId != otsId));
       }
       this.dataLength = this.dataSource.data.length;
       this.dataSource._updateChangeSubscription();
@@ -100,39 +99,37 @@ export class PaymentTableComponent implements OnInit{
       error => {this.snackBar.open(error.error.message, "Ok", {duration: 8000});});
   }
 
-  editPayment(paymentId, index){
+  editOts(otsId, index){
     let i = 0;
-    this.paymentService.updateDto = JSON.parse(JSON.stringify(this.dataSource.data[index]));
-    let dialogRef = this.dialog.open(PaymentUpdateComponent);
+    this.otsService.updateDto = JSON.parse(JSON.stringify(this.dataSource.data[index]));
+    let dialogRef = this.dialog.open(OtsUpdateComponent);
     dialogRef.afterClosed().subscribe(response => {
-      if(response != "cancelled"){
+      if(response != "cancelled") {
         if(i === 0){
-          this.updatePayment(paymentId);
+          this.updateOts(otsId);
           i++;
         }
       }
     });
   }
 
-  createPayment(){
+  createOts(){
     let i = 0;
-    this.paymentService.createDto.parentId = this.basicParentId;
-    this.paymentService.createDto.paymentMethod = "CASH";
-    this.paymentService.createDto.amount = null;
-    this.paymentService.createDto.createdBy = null;
-    let dialogRef = this.dialog.open(PaymentCreateComponent);
+    this.otsService.createDto.parentId = this.basicParentId;
+    this.otsService.createDto.amount = null;
+    this.otsService.createDto.instalments = false;
+    let dialogRef = this.dialog.open(OtsCreateComponent);
     dialogRef.afterClosed().subscribe(data => {
       if(data != "cancelled"){
         if(i === 0){
-          this.paymentService.createPayment().subscribe(response => {
-            this.reloadPayments(this.basicParentId);
+          this.otsService.createOts().subscribe(response => {
+            this.reloadOts(this.basicParentId);
             i++;
-          },
-            error => {this.snackBar.open(error.error.message, "Ok", {duration: 8000});
-            });
+          });
         }
       }
-    });
+    },
+      error => {this.snackBar.open(error.error.message, "Ok", {duration: 8000});});
   }
 
   applyFilter(event: Event) {

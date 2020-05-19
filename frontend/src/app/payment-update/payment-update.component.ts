@@ -13,6 +13,7 @@ export class PaymentUpdateComponent{
 
   constructor(public dialogRef: MatDialogRef<PaymentUpdateComponent>,
               public paymentService: PaymentService) {
+      dialogRef.disableClose = true;
       this.data = JSON.parse(JSON.stringify(this.paymentService.updateDto));
       this.data.createdWhen = this.data.createdWhen.slice(0, -9);
       this.data.cancellationDate = this.data.cancellationDate.slice(0, -9);
@@ -25,6 +26,6 @@ export class PaymentUpdateComponent{
   }
 
   cancel(): void {
-    this.dialogRef.close();
+    this.dialogRef.close("cancelled");
   }
 }

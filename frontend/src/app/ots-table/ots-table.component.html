@@ -1,0 +1,84 @@
+<div>
+  <mat-toolbar color="primary">
+    <span>One time services</span>
+    <span class="space"></span>
+  </mat-toolbar>
+</div>
+
+<div class="mat-elevation-z8">
+
+  <div class="form">
+    <mat-form-field color="accent">
+      <mat-label>Filter ots</mat-label>
+      <label>
+        <input matInput (keyup)="applyFilter($event)">
+      </label>
+    </mat-form-field>
+  </div>
+
+  <table mat-table [dataSource]="dataSource" matSort>
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+      <td mat-cell *matCellDef="let ots"> {{ots.name}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="createdWhen">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Created when </th>
+      <td mat-cell *matCellDef="let ots"> {{dateFormatter.formatDate(ots.createdWhen)}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="amount">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Amount </th>
+      <td mat-cell *matCellDef="let ots"> {{ots.amount | currency}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="instalments">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Instalments </th>
+      <td mat-cell *matCellDef="let ots"> {{ots.instalments | yesNo}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef> Status </th>
+      <td mat-cell *matCellDef="let ots"> {{ots.otsStatus}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="terminationReason">
+      <th mat-header-cell *matHeaderCellDef> Termination reason </th>
+      <td mat-cell *matCellDef="let ots"> <span *ngIf="ots.otsStatus == 'TERMINATED'">{{ots.terminationReason}} </span></td>
+    </ng-container>
+
+    <ng-container matColumnDef="cancellationDate">
+      <th mat-header-cell *matHeaderCellDef> Cancellation date </th>
+      <td mat-cell *matCellDef="let ots"> {{dateFormatter.formatDate(ots.cancellationDate)}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>
+        <button mat-icon-button color="primary" (click)="createOts()" *ngIf="dataSource.data.length < 5">
+          <mat-icon>add</mat-icon>
+        </button>
+      </th>
+
+      <td mat-cell *matCellDef="let ots; let i=index;">
+        <button mat-icon-button color="accent" (click)="deleteOts(ots.objectId)">
+          <mat-icon>delete</mat-icon>
+        </button>
+
+        <button mat-icon-button color="accent" (click)="cancelOts(ots.objectId)" *ngIf="ots!=null && ots.otsStatus != 'TERMINATED'">
+          <mat-icon>cancel</mat-icon>
+        </button>
+
+        <button mat-icon-button color="accent" (click)="editOts(ots.objectId, i)" *ngIf="ots!=null && ots.otsStatus != 'TERMINATED'">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+  </table>
+
+  <mat-paginator [length]="dataLength" [pageSize]="5" [pageSizeOptions]="[5, 10, 25]"></mat-paginator>
+</div>

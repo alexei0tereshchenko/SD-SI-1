@@ -1,0 +1,18 @@
+[
+  {
+    "objectId": 20,
+    "objectTypeId": 3,
+    "parentId": 1000,
+    "name": "billing-account-20",
+    "balance": 5000,
+    "status": "ACTIVE"
+  },
+  {
+    "objectId": 25,
+    "objectTypeId": 3,
+    "parentId": 1000,
+    "name": "billing-account-25",
+    "balance": 12200,
+    "status": "ACTIVE"
+  }
+]
