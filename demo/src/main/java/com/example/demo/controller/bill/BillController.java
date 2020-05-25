@@ -55,7 +55,7 @@ public class BillController {
         }
     }
 
-    @GetMapping(value = "account/{accoundId}")
+    @GetMapping(value = "/account/{accoundId}")
     public List<Bill> getBillingAccountBill(@PathVariable Long accountId) throws BillController.BillControllerException {
         try {
             return billService.getBillingAccountBill(accountId);

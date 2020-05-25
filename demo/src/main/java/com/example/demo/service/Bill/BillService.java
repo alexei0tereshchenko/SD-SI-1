@@ -13,7 +13,7 @@ import java.util.List;
 public class BillService {
 
     @Autowired
-    BillIntegrationService billIntegrationService;
+    BillIntegrationService billIntegrationServiceInt;
 
     public Bill createBill(CreateBillDto source) throws BillServiceException {
         try {
@@ -26,8 +26,12 @@ public class BillService {
             bill.setBillStyle(source.getBillStyle());
             bill.setBillNumber(source.getBillNumber());
 
-            billIntegrationService.createBill(bill);
-            return bill;
+            try {
+                billIntegrationServiceInt.createBill(bill);
+                return bill;
+            } catch (BillIntegrationService.BillIntegrationException e) {
+                throw new BillServiceException(e);
+            }
         } catch (Exception e) {
             throw new BillServiceException(e);
         }
@@ -35,7 +39,7 @@ public class BillService {
 
     public Bill getBill(Long id) throws BillServiceException {
         try {
-            return billIntegrationService.getBill(id);
+            return billIntegrationServiceInt.getBill(id);
         } catch (Exception e) {
             throw new BillServiceException(e);
         }
@@ -43,7 +47,7 @@ public class BillService {
 
     public List<Bill> getBillingAccountBill(Long accountId) throws BillServiceException {
         try {
-            return billIntegrationService.getBillingAccountBill(accountId);
+            return billIntegrationServiceInt.getBillingAccountBill(accountId);
         } catch (Exception e) {
             throw new BillServiceException(e);
         }
@@ -51,7 +55,7 @@ public class BillService {
 
     public Bill updateBill(UpdateBillDto source, Long id) throws BillServiceException {
         try {
-            return billIntegrationService.updateBill(source, id);
+            return billIntegrationServiceInt.updateBill(source, id);
         } catch (Exception e) {
             throw new BillServiceException(e);
         }
@@ -59,7 +63,7 @@ public class BillService {
 
     public void deleteBill(Long id) throws BillServiceException {
         try {
-            billIntegrationService.deleteBill(id);
+            billIntegrationServiceInt.deleteBill(id);
         } catch (Exception e) {
             throw new BillServiceException(e);
         }
@@ -67,7 +71,7 @@ public class BillService {
 
     public Bill cancelBill(Long id) throws BillServiceException {
         try {
-            return billIntegrationService.cancelBill(id);
+            return billIntegrationServiceInt.cancelBill(id);
         } catch (Exception e) {
             throw new BillServiceException(e);
         }

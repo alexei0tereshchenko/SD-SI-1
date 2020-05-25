@@ -32,7 +32,7 @@ public class BillIntegrationService {
     @Transactional
     public void createBill(Bill source) throws BillIntegrationException {
         if (objectRepository.countObjectsByParent(source.getParentId(), source.getObjectTypeId()) >= Bill.BILL_LIMIT_FOR_BILL_ACCOUNT) {
-            throw new BillIntegrationException("The operation for billing account with ID : " + source.getParentId() + "was stopped due to exceeding the limit");
+            throw new BillIntegrationException("The operation for billing account with ID : " + source.getParentId() + " was stopped due to exceeding the limit");
         } else {
             Object billDataObject = objectRepository.save(billConverter.convertToEav(source));
             billDataObject.getParams().forEach(
@@ -87,7 +87,7 @@ public class BillIntegrationService {
                 throw new BillIntegrationException("Can't update bill because it's already canceled");
             }
 
-            findParamByAttributeId(params, 28L).setValue("CANCELED");
+            findParamByAttributeId(params, 28L).setValue(source.getBillStatus().toString());
             findParamByAttributeId(params, 29L).setValue(source.getBillStyle().toString());
             findParamByAttributeId(params, 30L).setValue(source.getBillNumber().toString());
             Bill b = (Bill) billConverter.convertFromEav(billObject);
@@ -108,9 +108,9 @@ public class BillIntegrationService {
                 throw new BillIntegrationException("Can't cancel bill because it's already canceled");
             }
             findParamByAttributeId(params, 28L).setValue("CANCELED");
-            Bill bill = (Bill) billConverter.convertFromEav(billObject);
+            Bill b = (Bill) billConverter.convertFromEav(billObject);
             objectRepository.save(billObject);
-            return bill;
+            return b;
         } catch (NoSuchElementException e) {
             throw new BillIntegrationException("Can't update bill because object with Id:" + objectId + " wasn't found", e);
         }
