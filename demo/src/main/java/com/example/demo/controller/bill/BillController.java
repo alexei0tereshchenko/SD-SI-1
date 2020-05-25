@@ -55,14 +55,6 @@ public class BillController {
         }
     }
 
-    @GetMapping(value = "/account/{accoundId}")
-    public List<Bill> getBillingAccountBill(@PathVariable Long accountId) throws BillController.BillControllerException {
-        try {
-            return billService.getBillingAccountBill(accountId);
-        } catch (BillService.BillServiceException e) {
-            throw new BillController.BillControllerException(e);
-        }
-    }
 
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

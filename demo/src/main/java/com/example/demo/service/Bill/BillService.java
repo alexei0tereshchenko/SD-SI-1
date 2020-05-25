@@ -45,14 +45,6 @@ public class BillService {
         }
     }
 
-    public List<Bill> getBillingAccountBill(Long accountId) throws BillServiceException {
-        try {
-            return billIntegrationServiceInt.getBillingAccountBill(accountId);
-        } catch (Exception e) {
-            throw new BillServiceException(e);
-        }
-    }
-
     public Bill updateBill(UpdateBillDto source, Long id) throws BillServiceException {
         try {
             return billIntegrationServiceInt.updateBill(source, id);

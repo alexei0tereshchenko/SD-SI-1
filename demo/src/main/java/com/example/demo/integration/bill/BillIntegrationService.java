@@ -52,20 +52,6 @@ public class BillIntegrationService {
         }
     }
 
-    public List<Bill> getBillingAccountBill(Long accountId)
-            throws BillIntegrationException {
-        List<Bill> bill = new ArrayList<>();
-        try {
-            List<Object> results = new ArrayList<>();
-            objectRepository.selectObjectsForParent(accountId, 7L).forEach(results::add);
-            for (Object billObject : results) {
-                bill.add((Bill) billConverter.convertFromEav(billObject));
-            }
-            return bill;
-        } catch (NoSuchElementException e) {
-            throw new BillIntegrationException("Can't find bill for account with ID:" + accountId, e);
-        }
-    }
 
     @Transactional
     public void deleteBill(long objectId) throws BillIntegrationException {
