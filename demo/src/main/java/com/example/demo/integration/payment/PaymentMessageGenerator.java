@@ -1,11 +1,9 @@
 package com.example.demo.integration.payment;
 
 import com.example.demo.integration.ExceptionMessageGenerator;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
-@Qualifier("payment")
 public class PaymentMessageGenerator extends ExceptionMessageGenerator {
     PaymentMessageGenerator(){
         this.setObjType("payment");

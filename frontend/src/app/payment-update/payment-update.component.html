@@ -14,7 +14,7 @@
     <div class="form">
       <mat-form-field color="accent">
         <input matInput class="form-control" placeholder="Amount" [(ngModel)]="data.amount"
-               name="amount" required [pattern]="'[1-9][0-9]*'" #amount="ngModel">
+               name="amount" required [pattern]="'-?[1-9][0-9]*'" #amount="ngModel">
         <mat-error *ngIf="amount.errors?.required">Field required</mat-error>
         <mat-error *ngIf="amount.errors?.pattern">Amount should be a number</mat-error>
       </mat-form-field>

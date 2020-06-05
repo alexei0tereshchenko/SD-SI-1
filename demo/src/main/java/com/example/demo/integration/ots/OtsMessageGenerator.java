@@ -1,11 +1,9 @@
 package com.example.demo.integration.ots;
 
 import com.example.demo.integration.ExceptionMessageGenerator;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
-@Qualifier("ots")
 public class OtsMessageGenerator extends ExceptionMessageGenerator {
     OtsMessageGenerator(){
         this.setObjType("ots");

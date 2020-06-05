@@ -5,6 +5,7 @@ import com.example.demo.dto.ots.UpdateOtsDto;
 import com.example.demo.dto.payment.CreatePaymentDto;
 import com.example.demo.eav.converter.EavBaseConverter;
 import com.example.demo.eav.model.object.Param;
+import com.example.demo.integration.ExceptionMessageGenerator;
 import com.example.demo.model.ots.Ots;
 import com.example.demo.eav.model.object.Object;
 import com.example.demo.model.payment.PaymentMethod;
@@ -35,7 +36,6 @@ public class OtsIntegrationService {
     private EavBaseConverter otsConverter;
 
     @Autowired
-    @Qualifier("ots")
     private OtsMessageGenerator messageGenerator;
 
     @Autowired
